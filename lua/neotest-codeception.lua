@@ -109,7 +109,8 @@ local function generate_result(value, result, xml_content)
     end
 
     return {
-      status = types.ResultStatus.skipped,
+      status = types.ResultStatus.failed,
+      output = result.output,
     }
   end
 
