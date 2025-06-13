@@ -214,6 +214,12 @@ later(function()
   )
 end)
 
+-- comments
+later(function()
+  add("numToStr/Comment.nvim")
+  require("Comment").setup()
+end)
+
 -- folke
 later(function()
   -- trouble
@@ -657,6 +663,53 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.highlight.on_yank() end,
 })
 
+-- debugger
+later(function()
+  -- dap
+  add("nvim-neotest/nvim-nio")
+  add("mfussenegger/nvim-dap")
+
+  local dap = require("dap")
+  vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
+  vim.keymap.set("n", "<F1>", dap.step_into, { desc = "Debug: Step Into" })
+  vim.keymap.set("n", "<F2>", dap.step_over, { desc = "Debug: Step Over" })
+  vim.keymap.set("n", "<F3>", dap.step_out, { desc = "Debug: Step Out" })
+  vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "[b]reakpoint toggle" })
+  vim.keymap.set(
+    "n",
+    "<leader>B",
+    function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+    { desc = "[B]reakpoint condition" }
+  )
+
+  -- debug.php
+  dap.adapters.xdebug = {
+    type = "executable",
+    command = "php-debug-adapter",
+  }
+  dap.configurations.php = {
+    {
+      type = "xdebug",
+      request = "launch",
+      name = "Listen for Xdebug",
+      port = 9000,
+    },
+  }
+
+  -- debug.golang
+  add("leoluz/nvim-dap-go")
+  require("dap-go").setup()
+
+  -- dap-ui
+  add("rcarriga/nvim-dap-ui")
+  local dapui = require("dapui")
+  dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+  dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+  dap.listeners.before.event_exited["dapui_config"] = dapui.close
+  dap.listeners.before.disconnect["dapui_config"] = dapui.close
+  dapui.setup()
+end)
+
 -- Start, Stop, Restart, Log commands {{{
 vim.api.nvim_create_autocmd("LspAttach", {
   group = augroup("lsp-attach-autocmds"),
@@ -728,53 +781,6 @@ vim.api.nvim_create_user_command("LspInfo", function() vim.cmd("silent checkheal
   desc = "Get all the information about all LSP attached",
 })
 -- }}}
-
--- debugger
-later(function()
-  -- dap
-  add("nvim-neotest/nvim-nio")
-  add("mfussenegger/nvim-dap")
-
-  local dap = require("dap")
-  vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
-  vim.keymap.set("n", "<F1>", dap.step_into, { desc = "Debug: Step Into" })
-  vim.keymap.set("n", "<F2>", dap.step_over, { desc = "Debug: Step Over" })
-  vim.keymap.set("n", "<F3>", dap.step_out, { desc = "Debug: Step Out" })
-  vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "[b]reakpoint toggle" })
-  vim.keymap.set(
-    "n",
-    "<leader>B",
-    function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
-    { desc = "[B]reakpoint condition" }
-  )
-
-  -- debug.php
-  dap.adapters.xdebug = {
-    type = "executable",
-    command = "php-debug-adapter",
-  }
-  dap.configurations.php = {
-    {
-      type = "xdebug",
-      request = "launch",
-      name = "Listen for Xdebug",
-      port = 9000,
-    },
-  }
-
-  -- debug.golang
-  add("leoluz/nvim-dap-go")
-  require("dap-go").setup()
-
-  -- dap-ui
-  add("rcarriga/nvim-dap-ui")
-  local dapui = require("dapui")
-  dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-  dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-  dap.listeners.before.event_exited["dapui_config"] = dapui.close
-  dap.listeners.before.disconnect["dapui_config"] = dapui.close
-  dapui.setup()
-end)
 
 -- load report
 later(function()
