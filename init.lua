@@ -89,7 +89,86 @@ now(function()
   vim.cmd.colorscheme("gruvbox")
 end)
 
-later(function() add("nvim-lua/plenary.nvim") end)
+now(function() add("nvim-lua/plenary.nvim") end)
+
+-- folke
+now(function()
+  -- trouble
+  add("folke/trouble.nvim")
+  require("trouble").setup()
+
+  -- todo comments
+  add("folke/todo-comments.nvim")
+  require("todo-comments").setup()
+
+  -- snacks
+  add("folke/snacks.nvim")
+
+  vim.g.snacks_animate = false
+  local snacks = require("snacks")
+  snacks.setup({
+    bigfile = { enabled = true },
+    indent = { enabled = true },
+    words = { enabled = true },
+    quickfile = { enabled = true },
+    image = { enabled = true },
+    picker = {
+      ui_select = true,
+      layout = {
+        cycle = false,
+        preset = "ivy",
+      },
+      sources = {
+        explorer = {
+          ignored = true,
+          hidden = true,
+          exclude = { ".git" },
+        },
+        files = {
+          include = { ".env" },
+        },
+      },
+      win = {
+        input = {
+          keys = {
+            ["<Esc>"] = { "close", mode = { "n", "i" } },
+          },
+        },
+      },
+    },
+  })
+
+  -- picker
+  local pick = snacks.picker
+  vim.keymap.set("n", "<leader><space>", pick.smart, { desc = "smart picker" })
+  vim.keymap.set("n", "<leader>/", pick.grep, { desc = "pick grep" })
+  vim.keymap.set("n", "<leader>.", pick.recent, { desc = "pick recent" })
+  vim.keymap.set("n", "<leader>pb", pick.buffers, { desc = "[p]ick [b]uffers" })
+  vim.keymap.set("n", "<leader>pf", pick.files, { desc = "[p]ick [f]iles" })
+
+  vim.keymap.set("n", "<leader>pj", pick.jumps, { desc = "[p]ick [j]umps" })
+  vim.keymap.set("n", "<leader>pk", pick.keymaps, { desc = "[p]ick [k]eymaps" })
+  vim.keymap.set("n", "<leader>pp", pick.pickers, { desc = "[p]ick [p]ickers" })
+  vim.api.nvim_create_user_command("Pickers", function() pick.pickers() end, {})
+
+  vim.keymap.set("n", "<leader>pd", pick.diagnostics_buffer, { desc = "[p]ick buffer [d]iagnostic" })
+  vim.keymap.set("n", "<leader>pD", pick.diagnostics, { desc = "[p]ick all [D]iagnostic" })
+  vim.keymap.set("n", "<leader>pgb", pick.git_branches, { desc = "[p]ick [g]it [b]ranches" })
+  vim.keymap.set("n", "<leader>pgh", pick.git_diff, { desc = "[p]ick [g]it [h]unks" })
+  vim.keymap.set("n", "<leader>pgl", pick.git_log_file, { desc = "[p]ick [g]it buffer [l]og" })
+  vim.keymap.set("n", "<leader>pgL", pick.git_log, { desc = "[p]ick [g]it all [L]og" })
+  vim.keymap.set("n", "<leader>pgs", pick.git_status, { desc = "[p]ick [g]it [s]tatus" })
+
+  -- bufdelete
+  vim.keymap.set("n", "<leader>bd", function() snacks.bufdelete() end, { desc = "[b]uffer [d]elete" })
+  -- rename
+  vim.keymap.set("n", "<leader>rf", snacks.rename.rename_file, { desc = "[r]ename [f]ile" })
+
+  -- words
+  local words = snacks.words
+  vim.keymap.set("n", "]r", function() words.jump(1) end, { desc = "next reference" })
+  vim.keymap.set("n", "[r", function() words.jump(-1) end, { desc = "previous reference" })
+end)
 
 -- mini.icons
 later(require("mini.icons").setup)
@@ -212,110 +291,18 @@ later(function()
     function() files.open(vim.api.nvim_buf_get_name(0)) end,
     { desc = "[n]avigate files" }
   )
+
+  local snacks = require("snacks")
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesActionRename",
+    callback = function(event) snacks.rename.on_rename_file(event.data.from, event.data.to) end,
+  })
 end)
 
 -- comments
 later(function()
   add("numToStr/Comment.nvim")
   require("Comment").setup()
-end)
-
--- folke
-later(function()
-  -- trouble
-  add("folke/trouble.nvim")
-  require("trouble").setup()
-
-  -- todo comments
-  add("folke/todo-comments.nvim")
-  require("todo-comments").setup()
-
-  -- snacks
-  add("folke/snacks.nvim")
-
-  vim.g.snacks_animate = false
-  local snacks = require("snacks")
-  snacks.setup({
-    bigfile = { enabled = true },
-    indent = { enabled = true },
-    words = { enabled = true },
-    quickfile = { enabled = true },
-    image = { enabled = true },
-    picker = {
-      layout = {
-        cycle = false,
-        preset = "ivy",
-      },
-      sources = {
-        explorer = {
-          ignored = true,
-          hidden = true,
-          exclude = { ".git" },
-        },
-        files = {
-          include = { ".env" },
-        },
-      },
-      win = {
-        input = {
-          keys = {
-            ["<Esc>"] = { "close", mode = { "n", "i" } },
-          },
-        },
-      },
-    },
-  })
-
-  -- picker
-  local pick = snacks.picker
-  vim.keymap.set("n", "<leader><space>", pick.smart, { desc = "smart picker" })
-  vim.keymap.set("n", "<leader>/", pick.grep, { desc = "pick grep" })
-  vim.keymap.set("n", "<leader>.", pick.recent, { desc = "pick recent" })
-  vim.keymap.set("n", "<leader>pb", pick.buffers, { desc = "[p]ick [b]uffers" })
-  vim.keymap.set("n", "<leader>pf", pick.files, { desc = "[p]ick [f]iles" })
-
-  vim.keymap.set("n", "<leader>pj", pick.jumps, { desc = "[p]ick [j]umps" })
-  vim.keymap.set("n", "<leader>pk", pick.keymaps, { desc = "[p]ick [k]eymaps" })
-  vim.keymap.set("n", "<leader>pp", pick.pickers, { desc = "[p]ick [p]ickers" })
-  vim.api.nvim_create_user_command("Pickers", function() pick.pickers() end, {})
-
-  vim.keymap.set("n", "<leader>pd", pick.diagnostics_buffer, { desc = "[p]ick buffer [d]iagnostic" })
-  vim.keymap.set("n", "<leader>pD", pick.diagnostics, { desc = "[p]ick all [D]iagnostic" })
-  vim.keymap.set("n", "<leader>pgb", pick.git_branches, { desc = "[p]ick [g]it [b]ranches" })
-  vim.keymap.set("n", "<leader>pgh", pick.git_diff, { desc = "[p]ick [g]it [h]unks" })
-  vim.keymap.set("n", "<leader>pgl", pick.git_log_file, { desc = "[p]ick [g]it buffer [l]og" })
-  vim.keymap.set("n", "<leader>pgL", pick.git_log, { desc = "[p]ick [g]it all [L]og" })
-  vim.keymap.set("n", "<leader>pgs", pick.git_status, { desc = "[p]ick [g]it [s]tatus" })
-
-  -- bufdelete
-  vim.keymap.set("n", "<leader>bd", function() snacks.bufdelete() end, { desc = "[b]uffer [d]elete" })
-  -- rename
-  vim.keymap.set("n", "<leader>rf", snacks.rename.rename_file, { desc = "[r]ename [f]ile" })
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "MiniFilesActionRename",
-    callback = function(event) snacks.rename.on_rename_file(event.data.from, event.data.to) end,
-  })
-
-  -- words
-  local words = snacks.words
-  vim.keymap.set("n", "]r", function() words.jump(1) end, { desc = "next reference" })
-  vim.keymap.set("n", "[r", function() words.jump(-1) end, { desc = "previous reference" })
-
-  -- dim
-  local dimming = false
-  vim.api.nvim_create_user_command("ToggleDim", function()
-    if dimming then
-      snacks.dim.disable()
-      dimming = false
-    else
-      snacks.dim.enable()
-      dimming = true
-    end
-  end, {})
-
-  -- zen
-  vim.keymap.set("n", "<leader>Z", function() snacks.zen.zoom() end, { desc = "[Z]oom toggle" })
-  vim.api.nvim_create_user_command("ToggleZenMode", function() snacks.zen() end, {})
 end)
 
 -- undotree
