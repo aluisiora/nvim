@@ -452,6 +452,8 @@ later(function()
     dockerfile = { "hadolint" },
     json = { "jsonlint" },
     jsonc = { "jsonlint" },
+    typescript = { "eslint" },
+    javascript = { "eslint" },
   }
 
   vim.api.nvim_create_autocmd("BufWritePost", {
