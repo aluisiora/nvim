@@ -596,17 +596,21 @@ later(function()
   -- lang.golang
   if has("go") then vim.lsp.enable("gopls") end
 
-  -- lang.php
   if has("php") and has("node") then
+    -- lang.php
+    vim.lsp.enable("intelephense")
     add("ccaglak/phptools.nvim")
     require("phptools").setup()
-
-    vim.lsp.enable("intelephense")
   end
 
-  -- lang.javascript
-  -- lang.typescript
-  if has("node") then vim.lsp.enable("vtsls") end
+  if has("node") then
+    -- lang.javascript
+    -- lang.typescript
+    vim.lsp.enable("vtsls")
+
+    -- lang.cucumber
+    vim.lsp.enable("cucumberls")
+  end
 
   -- lang.bash
   vim.lsp.enable("bashls")
