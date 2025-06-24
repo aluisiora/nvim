@@ -3,7 +3,7 @@ local logger = require("neotest.logging")
 local types = require("neotest.types")
 local Path = require("plenary.path")
 
-local NeotestAdapter = { name = "neotest-cucumber" }
+local NeotestAdapter = { name = "neotest-codeception-gherkin" }
 
 -- Detect cucumber feature files
 function NeotestAdapter.is_test_file(file_path) return file_path:match("%.feature$") end

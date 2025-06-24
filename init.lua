@@ -495,7 +495,7 @@ later(function()
   if has("php") then
     if hasprojectfile("codeception.yml") then
       table.insert(adapters, require("neotest-codeception"))
-      table.insert(adapters, require("neotest-cucumber"))
+      table.insert(adapters, require("neotest-codeception-gherkin"))
     else
       table.insert(adapters, require("neotest-phpunit"))
     end
