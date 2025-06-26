@@ -177,29 +177,17 @@ later(require("mini.icons").setup)
 later(function()
   require("mini.git").setup()
 
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "MiniGitCommandSplit",
-    callback = function(au_data)
-      if au_data.data.git_subcommand ~= "blame" then return end
-
-      -- Align blame output with source
-      local win_src = au_data.data.win_source
-      vim.wo.wrap = false
-      vim.fn.winrestview({ topline = vim.fn.line("w0", win_src) })
-      vim.api.nvim_win_set_cursor(0, { vim.fn.line(".", win_src), 0 })
-
-      -- Bind both windows so that they scroll together
-      vim.wo[win_src].scrollbind, vim.wo.scrollbind = true, true
-    end,
-  })
-  vim.api.nvim_create_user_command("Blame", function() vim.cmd("vertical Git blame -- %") end, {})
-
   add("akinsho/git-conflict.nvim")
   require("git-conflict").setup()
 end)
 
 -- mini.diff
-later(require("mini.diff").setup)
+later(function()
+  local diff = require("mini.diff")
+  diff.setup()
+
+  vim.keymap.set("n", "<leader>hp", diff.toggle_overlay, { desc = "[h]unk [p]review" })
+end)
 
 -- statusline
 later(function()
@@ -441,6 +429,7 @@ later(function()
     jsonc = { "jsonlint" },
     typescript = { "eslint" },
     javascript = { "eslint" },
+    lua = { "luacheck" },
   }
 
   vim.api.nvim_create_autocmd("BufWritePost", {
@@ -637,26 +626,6 @@ later(function()
   })
 end)
 
--- commands
-vim.api.nvim_create_user_command("CopyAbsolutePath", function()
-  local path = vim.fn.expand("%:p")
-  vim.fn.setreg("+", path)
-  vim.notify('Copied "' .. path .. '" to the clipboard')
-end, {})
-
-vim.api.nvim_create_user_command("CopyRelativePath", function()
-  local path = bufferpath()
-  vim.fn.setreg("+", path)
-  vim.notify('Copied "' .. path .. '" to the clipboard')
-end, {})
-
--- Highlight when yanking (copying) text
-vim.api.nvim_create_autocmd("TextYankPost", {
-  desc = "Highlight when yanking (copying) text",
-  group = augroup("highlight_yank"),
-  callback = function() vim.highlight.on_yank() end,
-})
-
 -- debugger
 later(function()
   -- dap
@@ -702,6 +671,36 @@ later(function()
   dap.listeners.before.event_exited["dapui_config"] = dapui.close
   dap.listeners.before.disconnect["dapui_config"] = dapui.close
   dapui.setup()
+end)
+
+-- autocmds
+later(function()
+  -- Highlight when yanking (copying) text
+  vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight when yanking (copying) text",
+    group = augroup("highlight_yank"),
+    callback = function() vim.highlight.on_yank() end,
+  })
+end)
+
+-- commands
+later(function()
+  vim.api.nvim_create_user_command("CopyAbsolutePath", function()
+    local path = vim.fn.expand("%:p")
+    vim.fn.setreg("+", path)
+    vim.notify('Copied "' .. path .. '" to the clipboard')
+  end, {})
+
+  vim.api.nvim_create_user_command("CopyRelativePath", function()
+    local path = bufferpath()
+    vim.fn.setreg("+", path)
+    vim.notify('Copied "' .. path .. '" to the clipboard')
+  end, {})
+
+  local phputils = require("phputils")
+  vim.api.nvim_create_user_command("PhpFindFQCN", phputils.fqcn_navigate, {})
+  vim.api.nvim_create_user_command("CopyPHPClassFQCN", phputils.copy_fqcn, {})
+  vim.api.nvim_create_user_command("CopyPHPNearMemberFQCN", phputils.copy_fqcn_with_near_member, {})
 end)
 
 -- Start, Stop, Restart, Log commands {{{
