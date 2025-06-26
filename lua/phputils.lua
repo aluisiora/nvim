@@ -1,16 +1,62 @@
 local ts_utils = require("nvim-treesitter.ts_utils")
 
-local function load_psr4_roots()
-  local file = io.open("composer.json", "r")
-  if not file then return {} end
-  local ok, parsed = pcall(vim.fn.json_decode, file:read("*a"))
-  file:close()
-  if not ok or not parsed or not parsed.autoload then return {} end
+local roots_cache = nil
+
+local function load_psr4_mappings()
+  if roots_cache then return roots_cache end
 
   local map = {}
-  for ns, path in pairs(parsed.autoload["psr-4"] or {}) do
-    map[ns:gsub("\\$", "")] = path:gsub("/$", "")
+
+  local function insert(ns, path)
+    ns = ns:gsub("\\$", "")
+    path = path:gsub("/$", "")
+    map[ns] = map[ns] or {}
+    table.insert(map[ns], path)
   end
+
+  -- composer.json
+  local cj = io.open("composer.json", "r")
+  if cj then
+    local ok, parsed = pcall(vim.fn.json_decode, cj:read("*a"))
+    cj:close()
+    if ok and parsed.autoload and parsed.autoload["psr-4"] then
+      for ns, paths in pairs(parsed.autoload["psr-4"]) do
+        if type(paths) == "table" then
+          for _, p in ipairs(paths) do
+            insert(ns, p)
+          end
+        else
+          insert(ns, paths)
+        end
+      end
+    end
+  end
+
+  -- composer.lock
+  local cl = io.open("composer.lock", "r")
+  if cl then
+    local ok, parsed = pcall(vim.fn.json_decode, cl:read("*a"))
+    cl:close()
+    if ok and parsed.packages then
+      for _, pkg in ipairs(parsed.packages) do
+        local psr4 = pkg.autoload and pkg.autoload["psr-4"]
+        if psr4 then
+          for ns, paths in pairs(psr4) do
+            if type(paths) == "table" then
+              for _, rel in ipairs(paths) do
+                insert(ns, "vendor/" .. pkg.name .. "/" .. rel)
+              end
+            else
+              insert(ns, "vendor/" .. pkg.name .. "/" .. paths)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  roots_cache = map
+
   return map
 end
 
@@ -19,12 +65,20 @@ local function parse_input(input)
   return class_part, member
 end
 
-local function fqcn_to_path(fqcn, psr4_roots)
-  for ns, dir in pairs(psr4_roots) do
+local function fqcn_to_path(fqcn, psr4_map)
+  local match = nil
+  for ns in pairs(psr4_map) do
     if fqcn:find("^" .. ns) then
-      local relative = fqcn:gsub("^" .. ns, ""):gsub("\\", "/") .. ".php"
-      return dir .. "/" .. relative
+      if not match or #ns > #match then match = ns end
     end
+  end
+
+  if not match then return nil end
+
+  local relative = fqcn:gsub("^" .. match, ""):gsub("\\", "/") .. ".php"
+  for _, base in ipairs(psr4_map[match]) do
+    local full = base .. "/" .. relative
+    if vim.fn.filereadable(full) == 1 then return full end
   end
 end
 
@@ -134,9 +188,9 @@ function M.fqcn_navigate()
   vim.ui.input({ prompt = "PHP FQCN", completion = "file" }, function(input)
     if not input or input == "" then return end
 
-    local roots = load_psr4_roots()
+    local roots = load_psr4_mappings()
     if vim.tbl_isempty(roots) then
-      vim.notify("No PSR-4 mappings found in composer.json", vim.log.levels.ERROR)
+      vim.notify("No PSR-4 mappings found in composer.json or composer.lock", vim.log.levels.ERROR)
       return
     end
 
