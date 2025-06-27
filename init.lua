@@ -59,6 +59,7 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left wind
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+vim.keymap.set("n", "<leader>Q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
 -- mini
 local path_package = vim.fn.stdpath("data") .. "/site"
@@ -93,17 +94,13 @@ now(function() add("nvim-lua/plenary.nvim") end)
 
 -- folke
 now(function()
-  -- trouble
-  add("folke/trouble.nvim")
-  require("trouble").setup()
+  add("folke/snacks.nvim")
+  add("folke/todo-comments.nvim")
 
   -- todo comments
-  add("folke/todo-comments.nvim")
   require("todo-comments").setup()
 
   -- snacks
-  add("folke/snacks.nvim")
-
   vim.g.snacks_animate = false
   local snacks = require("snacks")
   snacks.setup({
@@ -149,7 +146,6 @@ now(function()
   vim.keymap.set("n", "<leader>pj", pick.jumps, { desc = "[p]ick [j]umps" })
   vim.keymap.set("n", "<leader>pk", pick.keymaps, { desc = "[p]ick [k]eymaps" })
   vim.keymap.set("n", "<leader>pp", pick.pickers, { desc = "[p]ick [p]ickers" })
-  vim.api.nvim_create_user_command("Pickers", function() pick.pickers() end, {})
 
   vim.keymap.set("n", "<leader>pd", pick.diagnostics_buffer, { desc = "[p]ick buffer [d]iagnostic" })
   vim.keymap.set("n", "<leader>pD", pick.diagnostics, { desc = "[p]ick all [D]iagnostic" })
@@ -174,12 +170,7 @@ end)
 later(require("mini.icons").setup)
 
 -- mini.git
-later(function()
-  require("mini.git").setup()
-
-  add("akinsho/git-conflict.nvim")
-  require("git-conflict").setup()
-end)
+later(require("mini.git").setup)
 
 -- mini.diff
 later(function()
@@ -214,6 +205,9 @@ later(require("mini.extra").setup)
 
 -- mini.pairs
 later(require("mini.pairs").setup)
+
+-- mini.bracketed
+later(require("mini.bracketed").setup)
 
 -- mini.ai
 later(require("mini.ai").setup)
@@ -442,29 +436,21 @@ end)
 
 -- testing
 later(function()
-  -- coverage
   add("andythigpen/nvim-coverage")
-  require("coverage").setup()
-
-  -- neotest
   add("antoinemadec/FixCursorHold.nvim")
   add("nvim-neotest/nvim-nio")
   add("nvim-neotest/neotest")
-
-  -- test.golang
   add("fredrikaverpil/neotest-golang")
-
-  -- test.phpunit
   add("olimorris/neotest-phpunit")
-
-  -- test.jest
   add("nvim-neotest/neotest-jest")
-
-  -- test.playwright
   add("thenbe/neotest-playwright")
+
+  -- coverage
+  require("coverage").setup()
 
   local adapters = {}
 
+  -- test.golang
   if has("go") then
     table.insert(
       adapters,
@@ -481,6 +467,7 @@ later(function()
     )
   end
 
+  -- test.phpunit
   if has("php") then
     if hasprojectfile("codeception.yml") then
       table.insert(adapters, require("neotest-codeception"))
@@ -491,6 +478,7 @@ later(function()
   end
 
   if has("node") then
+    -- test.jest
     table.insert(
       adapters,
       require("neotest-jest")({
@@ -499,6 +487,7 @@ later(function()
       })
     )
 
+    -- test.playwright
     table.insert(
       adapters,
       require("neotest-playwright").adapter({
@@ -510,6 +499,7 @@ later(function()
     )
   end
 
+  -- neotest
   local neotest = require("neotest")
   neotest.setup({
     adapters = adapters,
@@ -542,6 +532,8 @@ end)
 later(function()
   add("mason-org/mason.nvim")
   add("j-hui/fidget.nvim")
+  add("ccaglak/phptools.nvim")
+  add("nvim-flutter/flutter-tools.nvim")
 
   require("mason").setup({})
   require("fidget").setup({
@@ -589,8 +581,8 @@ later(function()
   if has("php") and has("node") then
     -- lang.php
     vim.lsp.enable("intelephense")
-    add("ccaglak/phptools.nvim")
-    require("phptools").setup()
+
+    if hasprojectfile("composer.json") then require("phptools").setup() end
   end
 
   if has("node") then
@@ -607,8 +599,6 @@ later(function()
 
   -- lang.flutter
   if has("flutter") then
-    add("nvim-flutter/flutter-tools.nvim")
-
     require("flutter-tools").setup({
       flutter_lookup_cmd = "mise where flutter",
       lsp = {
@@ -628,10 +618,12 @@ end)
 
 -- debugger
 later(function()
-  -- dap
   add("nvim-neotest/nvim-nio")
   add("mfussenegger/nvim-dap")
+  add("leoluz/nvim-dap-go")
+  add("rcarriga/nvim-dap-ui")
 
+  -- dap
   local dap = require("dap")
   vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
   vim.keymap.set("n", "<F1>", dap.step_into, { desc = "Debug: Step Into" })
@@ -660,11 +652,9 @@ later(function()
   }
 
   -- debug.golang
-  add("leoluz/nvim-dap-go")
-  require("dap-go").setup()
+  if has("go") then require("dap-go").setup() end
 
   -- dap-ui
-  add("rcarriga/nvim-dap-ui")
   local dapui = require("dapui")
   dap.listeners.after.event_initialized["dapui_config"] = dapui.open
   dap.listeners.before.event_terminated["dapui_config"] = dapui.close
@@ -697,10 +687,12 @@ later(function()
     vim.notify('Copied "' .. path .. '" to the clipboard')
   end, {})
 
-  local phputils = require("phputils")
-  vim.api.nvim_create_user_command("PhpFindFQCN", phputils.fqcn_navigate, {})
-  vim.api.nvim_create_user_command("CopyPHPClassFQCN", phputils.copy_fqcn, {})
-  vim.api.nvim_create_user_command("CopyPHPNearMemberFQCN", phputils.copy_fqcn_with_near_member, {})
+  if hasprojectfile("composer.lock") then
+    local phputils = require("phputils")
+    vim.api.nvim_create_user_command("PhpFindFQCN", phputils.fqcn_navigate, {})
+    vim.api.nvim_create_user_command("CopyPHPClassFQCN", phputils.copy_fqcn, {})
+    vim.api.nvim_create_user_command("CopyPHPNearMemberFQCN", phputils.copy_fqcn_with_near_member, {})
+  end
 end)
 
 -- Start, Stop, Restart, Log commands {{{
