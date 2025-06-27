@@ -346,7 +346,7 @@ later(function()
   add("kristijanhusak/vim-dadbod-completion")
   add({
     source = "saghen/blink.cmp",
-    checkout = "v1.3.1",
+    checkout = "v1.4.1",
   })
   require("blink.cmp").setup({
     keymap = {
