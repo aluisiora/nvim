@@ -532,8 +532,12 @@ end)
 later(function()
   add("mason-org/mason.nvim")
   add("j-hui/fidget.nvim")
-  add("ccaglak/phptools.nvim")
   add("nvim-flutter/flutter-tools.nvim")
+  add("ccaglak/phptools.nvim")
+  add({
+    source = "adibhanna/phprefactoring.nvim",
+    depends = { "MunifTanjim/nui.nvim" },
+  })
 
   require("mason").setup({})
   require("fidget").setup({
@@ -582,7 +586,10 @@ later(function()
     -- lang.php
     vim.lsp.enable("intelephense")
 
-    if hasprojectfile("composer.json") then require("phptools").setup() end
+    if hasprojectfile("composer.json") then
+      require("phptools").setup()
+      require("phprefactoring").setup()
+    end
   end
 
   if has("node") then
