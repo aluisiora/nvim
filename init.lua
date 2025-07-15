@@ -109,6 +109,7 @@ now(function()
     words = { enabled = true },
     quickfile = { enabled = true },
     image = { enabled = true },
+    input = { enabled = true },
     picker = {
       ui_select = true,
       layout = {
@@ -123,13 +124,6 @@ now(function()
         },
         files = {
           include = { ".env" },
-        },
-      },
-      win = {
-        input = {
-          keys = {
-            ["<Esc>"] = { "close", mode = { "n", "i" } },
-          },
         },
       },
     },
@@ -199,9 +193,6 @@ later(function()
     },
   })
 end)
-
--- mini.extra
-later(require("mini.extra").setup)
 
 -- mini.pairs
 later(require("mini.pairs").setup)
@@ -773,6 +764,12 @@ vim.api.nvim_create_user_command("LspInfo", function() vim.cmd("silent checkheal
   desc = "Get all the information about all LSP attached",
 })
 -- }}}
+
+later(function()
+  local snacks = require("snacks")
+  vim.ui.select = snacks.picker.select
+  vim.ui.input = snacks.input
+end)
 
 -- load report
 later(function()
