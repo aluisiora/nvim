@@ -276,6 +276,12 @@ later(function()
   })
 end)
 
+-- autopairs
+later(function()
+  add("windwp/nvim-autopairs")
+  require("nvim-autopairs").setup()
+end)
+
 -- comments
 later(function()
   add("numToStr/Comment.nvim")
@@ -351,6 +357,13 @@ later(function()
       ["<C-n>"] = { "select_next", "show", "fallback" },
     },
     cmdline = { enabled = false },
+    comletion = {
+      accept = {
+        auto_brackets = {
+          enabled = true, -- integration with nvim-autopairs
+        },
+      },
+    },
     sources = {
       default = function(_)
         if vim.bo.filetype == "sql" then return { "dadbod", "lsp", "snippets", "path", "buffer" } end
