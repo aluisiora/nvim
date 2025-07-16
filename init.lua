@@ -59,7 +59,8 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left wind
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
-vim.keymap.set("n", "<leader>Q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open buffer diagnostic [q]uickfix list" })
+vim.keymap.set("n", "<leader>Q", vim.diagnostic.setqflist, { desc = "Open project diagnostic [Q]uickfix list" })
 
 -- mini
 local path_package = vim.fn.stdpath("data") .. "/site"
@@ -98,7 +99,7 @@ now(function()
   add("folke/todo-comments.nvim")
 
   -- todo comments
-  require("todo-comments").setup()
+  require("todo-comments").setup({ signs = false })
 
   -- snacks
   vim.g.snacks_animate = false
@@ -193,9 +194,6 @@ later(function()
     },
   })
 end)
-
--- mini.pairs
-later(require("mini.pairs").setup)
 
 -- mini.bracketed
 later(require("mini.bracketed").setup)
@@ -547,17 +545,44 @@ later(function()
   local pick = require("snacks").picker
 
   local keymaps = function(bufnr)
-    vim.keymap.set("n", "gd", pick.lsp_definitions, { buffer = bufnr, desc = "[g]oto [d]efinition" })
-    vim.keymap.set("n", "gr", pick.lsp_references, { buffer = bufnr, desc = "[g]oto [r]eferences" })
-    vim.keymap.set("n", "gI", pick.lsp_implementations, { buffer = bufnr, desc = "[g]oto [i]mplementations" })
-    vim.keymap.set("n", "gD", pick.lsp_declarations, { buffer = bufnr, desc = "[g]oto [D]eclaration" })
-    vim.keymap.set("n", "<leader>ds", pick.lsp_symbols, { buffer = bufnr, desc = "[d]ocument [s]ymbols" })
-    vim.keymap.set("n", "<leader>ws", pick.lsp_workspace_symbols, { buffer = bufnr, desc = "[w]orkspace [s]ymbols" })
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "[r]e[n]ame" })
-    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "[c]ode [a]ction" })
-    vim.keymap.set("n", "<leader>ee", vim.diagnostic.open_float, { desc = "show [e]rror" })
-    vim.keymap.set("n", "<leader>eq", vim.diagnostic.setqflist, { desc = "add [e]rrors to quickfix" })
+    vim.keymap.set({ "n", "x" }, "gra", vim.lsp.buf.code_action, { buffer = bufnr, desc = "[g]oto code [a]ction" })
+    vim.keymap.set("n", "grd", pick.lsp_definitions, { buffer = bufnr, desc = "[g]oto [d]efinition" })
+    vim.keymap.set("n", "grr", pick.lsp_references, { buffer = bufnr, desc = "[g]oto [r]eferences" })
+    vim.keymap.set("n", "gri", pick.lsp_implementations, { buffer = bufnr, desc = "[g]oto [i]mplementations" })
+    vim.keymap.set("n", "grD", pick.lsp_declarations, { buffer = bufnr, desc = "[g]oto [D]eclaration" })
+    vim.keymap.set("n", "grn", vim.lsp.buf.rename, { buffer = bufnr, desc = "[r]e[n]ame" })
+    vim.keymap.set("n", "grt", pick.lsp_type_definitions, { buffer = bufnr, desc = "[g]oto [t]ype definitions" })
+    vim.keymap.set("n", "gO", pick.lsp_symbols, { buffer = bufnr, desc = "[d]ocument [s]ymbols" })
+    vim.keymap.set("n", "gW", pick.lsp_workspace_symbols, { buffer = bufnr, desc = "[w]orkspace [s]ymbols" })
+    vim.keymap.set("n", "gE", vim.diagnostic.open_float, { desc = "Open [e]rror" })
   end
+
+  vim.diagnostic.config({
+    severity_sort = true,
+    float = { border = "rounded", source = "if_many" },
+    underline = { severity = vim.diagnostic.severity.ERROR },
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = "󰅚 ",
+        [vim.diagnostic.severity.WARN] = "󰀪 ",
+        [vim.diagnostic.severity.INFO] = "󰋽 ",
+        [vim.diagnostic.severity.HINT] = "󰌶 ",
+      },
+    },
+    virtual_text = {
+      source = "if_many",
+      spacing = 2,
+      format = function(diagnostic)
+        local diagnostic_message = {
+          [vim.diagnostic.severity.ERROR] = diagnostic.message,
+          [vim.diagnostic.severity.WARN] = diagnostic.message,
+          [vim.diagnostic.severity.INFO] = diagnostic.message,
+          [vim.diagnostic.severity.HINT] = diagnostic.message,
+        }
+        return diagnostic_message[diagnostic.severity]
+      end,
+    },
+  })
 
   vim.api.nvim_create_autocmd("LspAttach", {
     group = augroup("lsp-attach"),
