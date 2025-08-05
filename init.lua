@@ -110,10 +110,6 @@ now(function()
     words = { enabled = true },
     quickfile = { enabled = true },
     image = { enabled = true },
-    input = { enabled = true },
-    explorer = {
-      replace_netrw = false,
-    },
     picker = {
       ui_select = true,
       layout = {
@@ -121,20 +117,12 @@ now(function()
         preset = "ivy",
       },
       sources = {
-        explorer = {
-          ignored = true,
-          hidden = true,
-          exclude = { ".git" },
-        },
         files = {
           include = { ".env" },
         },
       },
     },
   })
-
-  -- explorer
-  vim.keymap.set("n", "<leader>e", function() snacks.explorer() end, { desc = "[e]xplorer toggle" })
 
   -- picker
   local pick = snacks.picker
@@ -806,7 +794,6 @@ vim.api.nvim_create_user_command("LspInfo", function() vim.cmd("silent checkheal
 later(function()
   local snacks = require("snacks")
   vim.ui.select = snacks.picker.select
-  vim.ui.input = snacks.input
 end)
 
 -- load report
