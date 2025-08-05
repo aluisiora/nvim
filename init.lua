@@ -52,7 +52,7 @@ local function hasprojectfile(filename)
 end
 
 -- keymaps
-vim.keymap.set("n", "<leader>-", vim.cmd.Ex, { desc = "Netwr" })
+vim.keymap.set("n", "<leader>N", vim.cmd.Ex, { desc = "Netwr" })
 vim.keymap.set("n", "x", '"_x')
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
@@ -200,9 +200,6 @@ later(function()
     },
   })
 end)
-
--- mini.bracketed
-later(require("mini.bracketed").setup)
 
 -- mini.ai
 later(require("mini.ai").setup)
@@ -557,7 +554,7 @@ later(function()
   })
 
   -- Disable the default keybinds
-  for _, bind in ipairs({ "grn", "gra", "gri", "grr" }) do
+  for _, bind in ipairs({ "grn", "grd", "gra", "gri", "grr" }) do
     pcall(vim.keymap.del, "n", bind)
   end
 
@@ -573,13 +570,19 @@ later(function()
     vim.keymap.set("n", "grt", pick.lsp_type_definitions, { buffer = bufnr, desc = "[g]oto [t]ype definitions" })
     vim.keymap.set("n", "gO", pick.lsp_symbols, { buffer = bufnr, desc = "[d]ocument [s]ymbols" })
     vim.keymap.set("n", "gW", pick.lsp_workspace_symbols, { buffer = bufnr, desc = "[w]orkspace [s]ymbols" })
-    vim.keymap.set("n", "gE", vim.diagnostic.open_float, { desc = "Open [e]rror" })
   end
 
   vim.diagnostic.config({
+    virtual_text = false,
+    virtual_lines = {
+      severity = {
+        min = vim.diagnostic.severity.WARN,
+      },
+      current_line = false,
+    },
+    underline = true,
+    update_in_insert = false,
     severity_sort = true,
-    float = { border = "rounded", source = "if_many" },
-    underline = { severity = vim.diagnostic.severity.ERROR },
     signs = {
       text = {
         [vim.diagnostic.severity.ERROR] = "󰅚 ",
@@ -588,18 +591,9 @@ later(function()
         [vim.diagnostic.severity.HINT] = "󰌶 ",
       },
     },
-    virtual_text = {
-      source = "if_many",
-      spacing = 2,
-      format = function(diagnostic)
-        local diagnostic_message = {
-          [vim.diagnostic.severity.ERROR] = diagnostic.message,
-          [vim.diagnostic.severity.WARN] = diagnostic.message,
-          [vim.diagnostic.severity.INFO] = diagnostic.message,
-          [vim.diagnostic.severity.HINT] = diagnostic.message,
-        }
-        return diagnostic_message[diagnostic.severity]
-      end,
+    float = {
+      border = "rounded",
+      source = "always",
     },
   })
 
