@@ -96,10 +96,6 @@ now(function() add("nvim-lua/plenary.nvim") end)
 -- folke
 now(function()
   add("folke/snacks.nvim")
-  add("folke/todo-comments.nvim")
-
-  -- todo comments
-  require("todo-comments").setup({ signs = false })
 
   -- snacks
   vim.g.snacks_animate = false
