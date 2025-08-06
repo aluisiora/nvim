@@ -61,6 +61,7 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open buffer diagnostic [q]uickfix list" })
 vim.keymap.set("n", "<leader>Q", vim.diagnostic.setqflist, { desc = "Open project diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>D", vim.diagnostic.open_float, { desc = "[D]iagnostic message" })
 
 -- mini
 local path_package = vim.fn.stdpath("data") .. "/site"
@@ -557,15 +558,6 @@ later(function()
   end
 
   vim.diagnostic.config({
-    virtual_text = false,
-    virtual_lines = {
-      severity = {
-        min = vim.diagnostic.severity.WARN,
-      },
-      current_line = false,
-    },
-    underline = true,
-    update_in_insert = false,
     severity_sort = true,
     signs = {
       text = {
@@ -575,9 +567,11 @@ later(function()
         [vim.diagnostic.severity.HINT] = "󰌶 ",
       },
     },
+    virtual_text = {
+      current_line = true,
+    },
     float = {
       border = "rounded",
-      source = "always",
     },
   })
 
