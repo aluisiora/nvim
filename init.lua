@@ -351,7 +351,7 @@ later(function()
       ["<C-n>"] = { "select_next", "show", "fallback" },
     },
     cmdline = { enabled = false },
-    comletion = {
+    completion = {
       accept = {
         auto_brackets = {
           enabled = true, -- integration with nvim-autopairs
