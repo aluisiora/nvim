@@ -4,8 +4,11 @@ return {
   root_markers = { "go.mod", "go.work", ".git", vim.uv.cwd() },
   settings = {
     gopls = {
+      buildFlags = {
+        "--tags=integration",
+      },
       completeUnimported = true,
-      usePlaceholders = true,
+      usePlaceholders = false,
       analyses = {
         unusedparams = true,
       },
