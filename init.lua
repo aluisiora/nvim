@@ -101,7 +101,10 @@ now(function()
   vim.cmd.colorscheme("rose-pine")
 end)
 
-now(function() add("nvim-lua/plenary.nvim") end)
+now(function()
+  add("nvim-lua/plenary.nvim")
+  add("MunifTanjim/nui.nvim")
+end)
 
 -- folke
 now(function()
@@ -342,11 +345,18 @@ later(function()
       "gosum",
       "gotmpl",
       "comment",
+      "hurl",
     },
     auto_install = true,
     highlight = { enable = true },
     indent = { enable = true },
   })
+end)
+
+-- markdown
+later(function()
+  add("MeanderingProgrammer/render-markdown.nvim")
+  require("render-markdown").setup()
 end)
 
 -- database
@@ -523,6 +533,17 @@ later(function()
     )
   end
 
+  -- hurl
+  later(function()
+    add({
+      source = "jellydn/hurl.nvim",
+      depends = {
+        "MeanderingProgrammer/render-markdown.nvim",
+      },
+    })
+    require("hurl").setup()
+  end)
+
   -- neotest
   local neotest = require("neotest")
   neotest.setup({
@@ -557,10 +578,7 @@ later(function()
   add("mason-org/mason.nvim")
   add("nvim-flutter/flutter-tools.nvim")
   add("ccaglak/phptools.nvim")
-  add({
-    source = "adibhanna/phprefactoring.nvim",
-    depends = { "MunifTanjim/nui.nvim" },
-  })
+  add("adibhanna/phprefactoring.nvim")
 
   require("mason").setup({})
 
