@@ -655,6 +655,12 @@ later(function()
   -- lang.bash
   vim.lsp.enable("bashls")
 
+  -- lang.nix
+  vim.lsp.enable("nixd")
+
+  -- lang.qml
+  vim.lsp.enable("qmlls")
+
   -- lang.flutter
   if has("flutter") then
     require("flutter-tools").setup({
