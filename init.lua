@@ -295,6 +295,9 @@ later(function()
   })
 end)
 
+-- vim-fugitive
+later(function() add("tpope/vim-fugitive") end)
+
 -- autopairs
 later(function()
   add("windwp/nvim-autopairs")
