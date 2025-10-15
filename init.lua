@@ -15,7 +15,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.o.termguicolors = true
 vim.o.number = true
-vim.o.relativenumber = true
 vim.o.wrap = false
 vim.o.cursorline = true
 vim.o.scrolloff = 12
@@ -294,9 +293,6 @@ later(function()
     callback = function(event) snacks.rename.on_rename_file(event.data.from, event.data.to) end,
   })
 end)
-
--- vim-fugitive
-later(function() add("tpope/vim-fugitive") end)
 
 -- autopairs
 later(function()
