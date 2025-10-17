@@ -649,6 +649,9 @@ later(function()
   -- lang.lua
   vim.lsp.enable("lua_ls")
 
+  -- lang.html
+  vim.lsp.enable("superhtml")
+
   -- lang.golang
   if has("go") then vim.lsp.enable("gopls") end
 
