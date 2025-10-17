@@ -437,7 +437,7 @@ later(function()
     php = { "php_cs_fixer" },
     javascript = { "prettier" },
     typescript = { "prettier" },
-    html = { "prettier" },
+    html = { "superhtml" },
     css = { "prettier" },
     go = { "gofumpt" },
     json = { "fixjson" },
