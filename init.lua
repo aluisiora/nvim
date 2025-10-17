@@ -14,6 +14,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.o.termguicolors = true
+vim.o.title = true
 vim.o.number = true
 vim.o.wrap = false
 vim.o.cursorline = true
@@ -39,6 +40,7 @@ vim.o.fileencoding = "utf-8"
 vim.o.signcolumn = "yes"
 vim.o.showmode = false
 vim.o.background = "dark"
+vim.o.backspace = "start,eol,indent"
 
 -- functions
 local function augroup(name) return vim.api.nvim_create_augroup("nvim_" .. name, { clear = true }) end
@@ -71,11 +73,14 @@ if not vim.loop.fs_stat(mini_path) then
     "git",
     "clone",
     "--filter=blob:none",
-    "https://github.com/echasnovski/mini.nvim",
+    "--branch",
+    "stable",
+    "https://github.com/nvim-mini/mini.nvim",
     mini_path,
   }
   vim.fn.system(clone_cmd)
   vim.cmd("packadd mini.nvim | helptags ALL")
+  vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
 -- mini.deps
@@ -129,13 +134,25 @@ now(function()
         preset = "ivy",
       },
       sources = {
+        smart = {
+          layout = {
+            preset = "vscode",
+          },
+        },
+        recent = {
+          filter = { cwd = true },
+        },
         explorer = {
           ignored = true,
           hidden = true,
           exclude = { ".git" },
         },
         files = {
+          hidden = true,
           include = { ".env" },
+          layout = {
+            preset = "vscode",
+          },
         },
       },
     },
@@ -177,6 +194,9 @@ end)
 
 -- mini.icons
 later(require("mini.icons").setup)
+
+-- mini.hipatterns
+later(require("mini.hipatterns").setup)
 
 -- mini.git
 later(require("mini.git").setup)
