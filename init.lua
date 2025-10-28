@@ -18,9 +18,3 @@ end
 
 -- mini.deps
 require("mini.deps").setup({ path = { package = path_package } })
---
--- later(function()
---   local snacks = require("snacks")
---   vim.ui.select = snacks.picker.select
---   vim.ui.input = snacks.input
--- end)
