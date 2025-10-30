@@ -302,6 +302,9 @@ later(function()
 
     -- lang.cucumber
     vim.lsp.enable("cucumberls")
+
+    -- lang.html lang.css
+    vim.lsp.enable({ "htmlls", "cssls", "emmetls" })
   end
 
   -- lang.bash
