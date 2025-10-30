@@ -279,14 +279,11 @@ later(function()
   -- lang.lua
   vim.lsp.enable("lua_ls")
 
-  -- lang.html
-  vim.lsp.enable("superhtml")
-
   -- lang.golang
   if has("go") then vim.lsp.enable("gopls") end
 
+  -- lang.php
   if has("php") and has("node") then
-    -- lang.php
     vim.lsp.enable("intelephense")
 
     if hasprojectfile("composer.json") then
@@ -295,8 +292,8 @@ later(function()
     end
   end
 
+  -- lang.javascript
   if has("node") then
-    -- lang.javascript
     -- lang.typescript
     vim.lsp.enable("vtsls")
 
@@ -304,7 +301,7 @@ later(function()
     vim.lsp.enable("cucumberls")
 
     -- lang.html lang.css
-    vim.lsp.enable({ "htmlls", "cssls", "emmetls" })
+    vim.lsp.enable({ "superhtml", "cssls", "emmetls" })
   end
 
   -- lang.bash
