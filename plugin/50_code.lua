@@ -324,12 +324,7 @@ later(function()
   end
 
   -- lang.openapi
-  vim.filetype.add({
-    pattern = {
-      ["openapi.*%.ya?ml"] = "yaml.openapi",
-      ["openapi.*%.json"] = "json.openapi",
-    },
-  })
+  vim.lsp.enable("vacuum")
 end)
 
 -- debugger
