@@ -22,7 +22,7 @@ later(function()
   add("kristijanhusak/vim-dadbod-completion")
   add({
     source = "saghen/blink.cmp",
-    checkout = "v1.7.0",
+    checkout = "v1.8.0",
   })
   require("blink.cmp").setup({
     keymap = {
