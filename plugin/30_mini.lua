@@ -65,26 +65,3 @@ later(
     })
   end
 )
-
--- mini.files
-later(function()
-  local files = require("mini.files")
-  files.setup({
-    options = {
-      use_as_default_explorer = false,
-    },
-  })
-
-  vim.keymap.set(
-    "n",
-    "<leader>n",
-    function() files.open(vim.api.nvim_buf_get_name(0)) end,
-    { desc = "[n]avigate files" }
-  )
-
-  local snacks = require("snacks")
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "MiniFilesActionRename",
-    callback = function(event) snacks.rename.on_rename_file(event.data.from, event.data.to) end,
-  })
-end)

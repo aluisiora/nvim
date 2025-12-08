@@ -1,4 +1,4 @@
-vim.keymap.set("n", "<leader>N", vim.cmd.Ex, { desc = "Netwr" })
+vim.keymap.set("n", "<leader>n", vim.cmd.Ex, { desc = "Netwr" })
 vim.keymap.set("n", "x", '"_x')
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
