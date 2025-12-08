@@ -2,18 +2,12 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 --- theme
 now(function()
-  add({
-    source = "rose-pine/neovim",
-    name = "rose-pine",
+  add("ellisonleao/gruvbox.nvim")
+  require("gruvbox").setup({
+    dim_inactive = false,
+    contrast = "hard",
   })
-  require("rose-pine").setup({
-    variant = "main",
-    dim_inactive_windows = true,
-    enable = {
-      legacy_highlights = false,
-    },
-  })
-  vim.cmd.colorscheme("rose-pine")
+  vim.cmd.colorscheme("gruvbox")
 end)
 
 now(function()
@@ -140,7 +134,7 @@ later(function()
 
   lualine.setup({
     options = {
-      theme = "rose-pine",
+      theme = "gruvbox",
       globalstatus = true,
       section_separators = "",
       component_separators = "",
