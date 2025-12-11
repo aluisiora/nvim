@@ -11,6 +11,7 @@ end
 -- database
 later(function()
   -- dadbod
+  vim.g.db_ui_use_nerd_fonts = 1
   add("tpope/vim-dadbod")
   add("kristijanhusak/vim-dadbod-ui")
 end)
@@ -40,15 +41,11 @@ later(function()
       },
     },
     sources = {
-      default = function(_)
-        if vim.bo.filetype == "sql" then return { "dadbod", "lsp", "snippets", "path", "buffer" } end
-
-        local comments = { "comment", "line_comment", "block_comment" }
-        local success, node = pcall(vim.treesitter.get_node)
-        if success and node and vim.tbl_contains(comments, node:type()) then return { "buffer" } end
-
-        return { "lsp", "snippets", "path", "buffer" }
-      end,
+      default = { "lsp", "snippets", "path", "buffer" },
+      per_filetype = {
+        sql = { "dadbod", "lsp", "snippets", "buffer" },
+        mysql = { "dadbod", "lsp", "snippets", "buffer" },
+      },
       providers = {
         dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
       },
