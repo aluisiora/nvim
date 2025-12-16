@@ -6,7 +6,18 @@
       "declare(strict_types=1);"
     ]
   },
-  "inv": {
+  "constructor": {
+    "prefix": "con",
+    "description": "Create PHP __construct method",
+    "body": [
+      "public function __construct(${1}): ${2:void}",
+      "{",
+      "    ${3}",
+      "}",
+      ""
+    ]
+  },
+  "invoke": {
     "prefix": "inv",
     "description": "Create PHP __invoke method",
     "body": [
@@ -61,6 +72,26 @@
       ""
     ]
   },
+  "foreach": {
+    "prefix": "foe",
+    "description": "Foreach loop",
+    "body": [
+      "foreach(\\$${1} as \\$${2}) {",
+      "    ${0}",
+      "}",
+      ""
+    ]
+  },
+  "foreach key": {
+    "prefix": "foek",
+    "description": "Foreach key value loop",
+    "body": [
+      "foreach(\\$${1} as \\$${2:key} => \\$${3:value}) {",
+      "    ${0}",
+      "}",
+      ""
+    ]
+  },
   "pest test (it) method": {
     "prefix": "it",
     "description": "Create a pest test",
@@ -77,4 +108,3 @@
     ]
   }
 }
-
