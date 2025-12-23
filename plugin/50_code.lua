@@ -27,10 +27,13 @@ later(function()
   })
   require("blink.cmp").setup({
     keymap = {
-      preset = "default",
-      ["<C-space>"] = {},
+      preset = "none",
+      ["<C-n>"] = { "show", "select_next", "fallback" },
+      ["<C-p>"] = { "select_prev", "fallback" },
+      ["<C-y>"] = { "select_and_accept" },
       ["<C-k>"] = { "show_documentation", "hide_documentation", "fallback" },
-      ["<C-n>"] = { "select_next", "show", "fallback" },
+      ["<Esc>"] = { "cancel", "fallback" },
+      ["<CR>"] = { "fallback" },
     },
     cmdline = { enabled = false },
     completion = {
@@ -38,6 +41,15 @@ later(function()
         auto_brackets = {
           enabled = true, -- integration with nvim-autopairs
         },
+      },
+      list = {
+        selection = {
+          preselect = false,
+          auto_insert = false,
+        },
+      },
+      ghost_text = {
+        enabled = false,
       },
     },
     sources = {
@@ -126,7 +138,10 @@ later(function()
   add("thenbe/neotest-playwright")
 
   -- coverage
-  require("coverage").setup()
+  require("coverage").setup({
+    commands = true,
+    auto_reload = true,
+  })
 
   local adapters = {}
 
