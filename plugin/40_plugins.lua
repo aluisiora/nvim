@@ -234,3 +234,9 @@ later(function()
   add("MeanderingProgrammer/render-markdown.nvim")
   require("render-markdown").setup()
 end)
+
+later(function()
+  local snacks = require("snacks")
+  snacks.input.enable()
+  vim.ui.select = snacks.picker.select
+end)
