@@ -32,7 +32,7 @@ later(function()
       ["<C-p>"] = { "select_prev", "fallback" },
       ["<C-y>"] = { "select_and_accept" },
       ["<C-k>"] = { "show_documentation", "hide_documentation", "fallback" },
-      ["<Esc>"] = { "cancel", "fallback" },
+      ["<Esc>"] = { "fallback" },
       ["<CR>"] = { "fallback" },
     },
     cmdline = { enabled = false },
