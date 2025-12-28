@@ -171,12 +171,6 @@ later(function()
   })
 end)
 
--- autopairs
-later(function()
-  add("windwp/nvim-autopairs")
-  require("nvim-autopairs").setup()
-end)
-
 -- comments
 later(function()
   add("numToStr/Comment.nvim")
