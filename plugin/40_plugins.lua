@@ -2,17 +2,55 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 --- theme
 now(function()
-  add("ellisonleao/gruvbox.nvim")
-  require("gruvbox").setup({
-    dim_inactive = false,
-    contrast = "hard",
-  })
-  vim.cmd.colorscheme("gruvbox")
+  add("gbprod/nord.nvim")
+  require("nord").setup({})
+  vim.cmd.colorscheme("nord")
 end)
 
 now(function()
   add("nvim-lua/plenary.nvim")
   add("MunifTanjim/nui.nvim")
+end)
+
+-- treesitter
+now(function()
+  add({
+    source = "nvim-treesitter/nvim-treesitter",
+    hooks = {
+      post_checkout = function() vim.cmd("TSUpdate") end,
+    },
+  })
+
+  -- blade
+  vim.filetype.add({
+    pattern = {
+      [".*%.blade%.php"] = "blade",
+    },
+  })
+
+  local ts = require("nvim-treesitter")
+  ts.setup()
+  ts.install({
+    "lua",
+    "sql",
+    "html",
+    "css",
+    "javascript",
+    "php",
+    "blade",
+    "diff",
+    "vim",
+    "vimdoc",
+    "json",
+    "go",
+    "gowork",
+    "gomod",
+    "gosum",
+    "gotmpl",
+    "comment",
+    "hurl",
+  })
+  vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 end)
 
 -- folke
@@ -160,7 +198,7 @@ later(function()
 
   lualine.setup({
     options = {
-      theme = "gruvbox",
+      theme = "nord",
       globalstatus = true,
       section_separators = "",
       component_separators = "",
@@ -179,49 +217,6 @@ end)
 
 -- undotree
 later(function() add("mbbill/undotree") end)
-
--- treesitter
-later(function()
-  add({
-    source = "nvim-treesitter/nvim-treesitter",
-    hooks = {
-      post_checkout = function() vim.cmd("TSUpdate") end,
-    },
-  })
-
-  -- blade
-  vim.filetype.add({
-    pattern = {
-      [".*%.blade%.php"] = "blade",
-    },
-  })
-
-  require("nvim-treesitter.configs").setup({
-    ensure_installed = {
-      "lua",
-      "sql",
-      "html",
-      "css",
-      "javascript",
-      "php",
-      "blade",
-      "diff",
-      "vim",
-      "vimdoc",
-      "json",
-      "go",
-      "gowork",
-      "gomod",
-      "gosum",
-      "gotmpl",
-      "comment",
-      "hurl",
-    },
-    auto_install = true,
-    highlight = { enable = true },
-    indent = { enable = true },
-  })
-end)
 
 -- markdown
 later(function()
