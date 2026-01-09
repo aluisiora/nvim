@@ -1,5 +1,3 @@
-local ts_utils = require("nvim-treesitter.ts_utils")
-
 local roots_cache = nil
 
 local function load_psr4_mappings()
@@ -146,7 +144,7 @@ end
 local function get_nearest_member_fqcn()
   local fqcn = get_fqcn()
 
-  local cursor_node = ts_utils.get_node_at_cursor()
+  local cursor_node = vim.treesitter.get_node()
   if not cursor_node then return fqcn end
 
   local node = cursor_node

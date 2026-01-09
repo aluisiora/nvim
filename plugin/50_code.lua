@@ -239,7 +239,6 @@ later(function()
   add("mason-org/mason.nvim")
   add("nvim-flutter/flutter-tools.nvim")
   add("ccaglak/phptools.nvim")
-  add("adibhanna/phprefactoring.nvim")
 
   require("mason").setup({})
 
@@ -300,7 +299,6 @@ later(function()
 
     if hasprojectfile("composer.json") then
       require("phptools").setup()
-      require("phprefactoring").setup()
     end
   end
 
