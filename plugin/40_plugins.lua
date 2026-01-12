@@ -2,9 +2,13 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 --- theme
 now(function()
-  add("gbprod/nord.nvim")
-  require("nord").setup({})
-  vim.cmd.colorscheme("nord")
+  add("EdenEast/nightfox.nvim")
+  require("nightfox").setup({
+    options = {
+      dim_inactive = true,
+    },
+  })
+  vim.cmd.colorscheme("nordfox")
 end)
 
 now(function()
@@ -51,6 +55,7 @@ now(function()
     "hurl",
   })
   vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  vim.treesitter.language.register("sql", "mysql")
 end)
 
 -- folke
