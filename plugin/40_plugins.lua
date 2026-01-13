@@ -2,13 +2,8 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 --- theme
 now(function()
-  add("EdenEast/nightfox.nvim")
-  require("nightfox").setup({
-    options = {
-      dim_inactive = true,
-    },
-  })
-  vim.cmd.colorscheme("nordfox")
+  add("AlexvZyl/nordic.nvim")
+  vim.cmd.colorscheme("nordic")
 end)
 
 now(function()
@@ -67,11 +62,15 @@ now(function()
   local snacks = require("snacks")
   snacks.setup({
     bigfile = { enabled = true },
-    indent = { enabled = true },
     words = { enabled = true },
     quickfile = { enabled = true },
     image = { enabled = true },
     input = { enabled = true },
+    indent = {
+      enabled = true,
+      only_scope = true,
+      only_current = true,
+    },
     explorer = {
       replace_netrw = false,
     },
@@ -203,7 +202,7 @@ later(function()
 
   lualine.setup({
     options = {
-      theme = "nord",
+      theme = "nordic",
       globalstatus = true,
       section_separators = "",
       component_separators = "",

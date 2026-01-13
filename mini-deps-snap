@@ -15,7 +15,7 @@ return {
   ["neotest-jest"] = "3f0cc2cff1ee05394081805c622dc2551b54d8c4",
   ["neotest-phpunit"] = "2761ae9e9a385e491a9731f8c52824e1be64a68f",
   ["neotest-playwright"] = "6266945039dac27a354de33d2f2a66e75485d5e9",
-  ["nightfox.nvim"] = "ba47d4b4c5ec308718641ba7402c143836f35aa9",
+  ["nordic.nvim"] = "962c717820a9d7201ef7622cf1e78bd57806bb7c",
   ["nui.nvim"] = "de740991c12411b663994b2860f1a4fd0937c130",
   ["nvim-coverage"] = "a939e425e363319d952a6c35fb3f38b34041ded2",
   ["nvim-dap"] = "cdfd55a133f63228c55f91378f12908cb2a78ded",
