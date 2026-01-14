@@ -16,6 +16,17 @@ later(function()
   add("kristijanhusak/vim-dadbod-ui")
 end)
 
+-- hurl
+later(function()
+  add({
+    source = "jellydn/hurl.nvim",
+    depends = {
+      "MeanderingProgrammer/render-markdown.nvim",
+    },
+  })
+  require("hurl").setup()
+end)
+
 -- code completion
 later(function()
   -- blink
@@ -194,17 +205,6 @@ later(function()
     )
   end
 
-  -- hurl
-  later(function()
-    add({
-      source = "jellydn/hurl.nvim",
-      depends = {
-        "MeanderingProgrammer/render-markdown.nvim",
-      },
-    })
-    require("hurl").setup()
-  end)
-
   -- neotest
   local neotest = require("neotest")
   neotest.setup({
@@ -297,9 +297,7 @@ later(function()
   if has("php") and has("node") then
     vim.lsp.enable("intelephense")
 
-    if hasprojectfile("composer.json") then
-      require("phptools").setup()
-    end
+    if hasprojectfile("composer.json") then require("phptools").setup() end
   end
 
   -- lang.javascript
