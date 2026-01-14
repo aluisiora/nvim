@@ -2,8 +2,11 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 --- theme
 now(function()
-  add("AlexvZyl/nordic.nvim")
-  vim.cmd.colorscheme("nordic")
+  add("rebelot/kanagawa.nvim")
+  require("kanagawa").setup({
+    dimInactive = true,
+  })
+  vim.cmd.colorscheme("kanagawa")
 end)
 
 now(function()
@@ -202,7 +205,7 @@ later(function()
 
   lualine.setup({
     options = {
-      theme = "nordic",
+      theme = "kanagawa",
       globalstatus = true,
       section_separators = "",
       component_separators = "",
