@@ -29,7 +29,12 @@ vim.o.signcolumn = "yes"
 vim.o.showmode = false
 vim.o.background = "dark"
 vim.o.backspace = "start,eol,indent"
-vim.o.foldlevel = 10
-vim.o.foldmethod = "indent"
-vim.o.foldnestmax = 10
-vim.o.foldtext = ""
+
+-- Line folding
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+vim.api.nvim_create_autocmd({ "BufReadPost", "FileReadPost" }, {
+  group = vim.api.nvim_create_augroup("open_folds", { clear = true }),
+  pattern = "*",
+  command = "normal zR",
+})
