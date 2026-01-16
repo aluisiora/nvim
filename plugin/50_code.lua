@@ -379,7 +379,27 @@ later(function()
   dap.listeners.before.event_terminated["dapui_config"] = dapui.close
   dap.listeners.before.event_exited["dapui_config"] = dapui.close
   dap.listeners.before.disconnect["dapui_config"] = dapui.close
-  dapui.setup()
+  dapui.setup({
+    layouts = {
+      {
+        elements = {
+          { id = "scopes", size = 0.40 },
+          { id = "stacks", size = 0.30 },
+          { id = "breakpoints", size = 0.15 },
+          { id = "watches", size = 0.15 },
+        },
+        position = "left",
+        size = 40,
+      },
+      {
+        elements = {
+          { id = "repl", size = 1.0 },
+        },
+        position = "bottom",
+        size = 12,
+      },
+    },
+  })
 end)
 
 -- Start, Stop, Restart, Log commands {{{
