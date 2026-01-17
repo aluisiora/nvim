@@ -2,11 +2,9 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 --- theme
 now(function()
-  add("rebelot/kanagawa.nvim")
-  require("kanagawa").setup({
-    dimInactive = true,
-  })
-  vim.cmd.colorscheme("kanagawa")
+  add({ source = "catppuccin/nvim", name = "catppuccin" })
+  require("catppuccin").setup({ flavour = "mocha" })
+  vim.cmd.colorscheme("catppuccin")
 end)
 
 now(function()
@@ -18,6 +16,7 @@ end)
 now(function()
   add({
     source = "nvim-treesitter/nvim-treesitter",
+    checkout = "main",
     hooks = {
       post_checkout = function() vim.cmd("TSUpdate") end,
     },
@@ -205,7 +204,7 @@ later(function()
 
   lualine.setup({
     options = {
-      theme = "kanagawa",
+      theme = "auto",
       globalstatus = true,
       section_separators = "",
       component_separators = "",
