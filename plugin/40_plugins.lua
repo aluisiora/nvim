@@ -53,6 +53,8 @@ now(function()
   })
   vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   vim.treesitter.language.register("sql", "mysql")
+
+  add("nvim-treesitter/nvim-treesitter-context")
 end)
 
 -- folke
@@ -205,7 +207,6 @@ later(function()
   lualine.setup({
     options = {
       theme = "auto",
-      globalstatus = true,
       section_separators = "",
       component_separators = "",
     },
