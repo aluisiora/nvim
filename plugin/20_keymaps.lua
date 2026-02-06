@@ -16,8 +16,8 @@ nmap("]r", "<Cmd>lua Snacks.words.jump(1)<CR>", "next word reference")
 nmap("[r", "<Cmd>lua Snacks.words.jump(-1)<CR>", "previous word reference")
 
 -- Language mappings ===============================================================
-nmap_lsp("grd", "<Cmd>lua vim.lsp_definitons()<CR>", "Go to definitions")
-nmap_lsp("gW", "<Cmd>lua vim.lsp_workspace_symbols()<CR>", "Workpace symbols")
+nmap_lsp("grd", "<Cmd>lua vim.lsp.buf.definition()<CR>", "Source definitions")
+nmap_lsp("gW", "<Cmd>lua vim.lsp.buf.workspace_symbol()<CR>", "Workpace symbols")
 nmap("grN", "<Cmd>lua Snacks.rename.rename_file()<CR>", "Rename file")
 nmap("grf", '<Cmd>lua require("conform").format()<CR>', "Format file")
 
