@@ -54,7 +54,10 @@ now_if_args(function()
   vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("mini-lsp-completion", { clear = true }),
     desc = "Set 'omnifunc'",
-    callback = function(event) vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp" end,
+    callback = function(event)
+      vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+      vim.bo[event.buf].completeopt = "menuone,noselect,noinsert,fuzzy,preview"
+    end,
   })
 
   -- Advertise to servers that Neovim now supports certain set of completion and
