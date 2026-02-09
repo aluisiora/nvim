@@ -8,6 +8,15 @@ local function hasprojectfile(filename)
   return stat ~= nil
 end
 
+-- AI Slop ====================================================================
+later(function()
+  add({
+    source = "CopilotC-Nvim/CopilotChat.nvim",
+    depends = { "nvim-lua/plenary.nvim" },
+  })
+  require("CopilotChat").setup()
+end)
+
 -- Language servers ===========================================================
 
 -- Mason
