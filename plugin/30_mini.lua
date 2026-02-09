@@ -56,7 +56,7 @@ now_if_args(function()
     desc = "Set 'omnifunc'",
     callback = function(event)
       vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
-      vim.bo[event.buf].completeopt = "menuone,noselect,noinsert,fuzzy,preview"
+      vim.bo[event.buf].completeopt = "menuone,noselect,noinsert,fuzzy"
     end,
   })
 
