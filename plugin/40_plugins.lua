@@ -54,8 +54,9 @@ now_if_args(function()
   vim.treesitter.language.register("sql", "mysql")
 end)
 
--- snacks
+-- file picking and exploring
 now_if_args(function()
+  -- snacks
   add("folke/snacks.nvim")
   local snacks = require("snacks")
   snacks.setup({
@@ -72,9 +73,8 @@ now_if_args(function()
       vim.notify("mini-files lsp renamed")
     end,
   })
-end)
 
-now_if_args(function()
+  -- fff
   add({
     source = "dmtrKovalenko/fff.nvim",
     hooks = { post_checkout = function() require("fff.download").download_or_build_binary() end },
@@ -86,6 +86,10 @@ now_if_args(function()
     preview = { enabled = false },
     git = { status_text_color = true },
   }
+
+  -- fff & snacks
+  add("madmaxieee/fff-snacks.nvim")
+  require("fff-snacks").setup()
 end)
 
 -- undotree

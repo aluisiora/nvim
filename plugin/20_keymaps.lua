@@ -44,7 +44,7 @@ _G.Config.leader_group_clues = {
 }
 
 -- special fff map
-nmap_leader("<space>", '<Cmd>lua require("fff").find_files()<CR>', "Fuzzy find")
+nmap_leader("<space>", '<Cmd>FFFSnacks<CR>', "Fuzzy find")
 
 -- b is for 'Buffer'
 nmap_leader("ba", "<Cmd>b#<CR>", "Alternate")
