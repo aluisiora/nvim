@@ -198,11 +198,6 @@ later(function()
   require("mini.pairs").setup({ modes = { command = true } })
 end)
 
--- Pick anything with single window layout and fast matching. This is one of
--- the main usability improvements as it powers a lot of "find things quickly"
--- workflows.
-later(function() require("mini.pick").setup() end)
-
 -- Manage and expand snippets (templates for a frequently used text).
 -- Typical workflow is to type snippet's (configurable) prefix and expand it
 -- into a snippet session.

@@ -63,6 +63,27 @@ now_if_args(function()
     image = { enabled = true },
     input = { enabled = true },
     words = { enabled = true },
+    explorer = {
+      replace_netrw = false,
+    },
+    picker = {
+      ui_select = true,
+      layout = { cycle = false, preset = "ivy" },
+      sources = {
+        recent = {
+          filter = { cwd = true },
+        },
+        explorer = {
+          ignored = true,
+          hidden = true,
+          exclude = { ".git" },
+        },
+        files = {
+          hidden = true,
+          include = { ".env" },
+        },
+      },
+    },
   })
   vim.ui.select = snacks.picker.select
   vim.g.snacks_animate = false
@@ -70,7 +91,6 @@ now_if_args(function()
     pattern = "MiniFilesActionRename",
     callback = function(event)
       Snacks.rename.on_rename_file(event.data.from, event.data.to)
-      vim.notify("mini-files lsp renamed")
     end,
   })
 
@@ -80,7 +100,7 @@ now_if_args(function()
     hooks = { post_checkout = function() require("fff.download").download_or_build_binary() end },
   })
   vim.g.fff = {
-    prompt = '󰄾 ',
+    prompt = "󰄾 ",
     lazy_sync = true,
     layout = { prompt_position = "top" },
     preview = { enabled = false },

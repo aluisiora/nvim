@@ -38,12 +38,15 @@ _G.Config.leader_group_clues = {
   { mode = "n", keys = "<Leader>f", desc = "+Find" },
   { mode = "n", keys = "<Leader>g", desc = "+Git" },
   { mode = "x", keys = "<Leader>g", desc = "+Git" },
-  { mode = "n", keys = "<Leader>o", desc = "+Other" },
   { mode = "n", keys = "<Leader>s", desc = "+Session" },
   { mode = "n", keys = "<Leader>t", desc = "+Test" },
 }
 
--- special fff map
+-- special leader direct keymaps
+nmap_leader("/", '<Cmd>lua Snacks.picker.grep()<CR>', 'Grep search')
+nmap_leader(":", '<Cmd>lua Snacks.picker.command_history()<CR>', 'Command history')
+nmap_leader(",", '<Cmd>lua Snacks.picker.buffers()<CR>', 'Open buffers')
+nmap_leader(".", '<Cmd>lua Snacks.picker.recent()<CR>', 'Recent files')
 nmap_leader("<space>", '<Cmd>FFFSnacks<CR>', "Fuzzy find")
 
 -- b is for 'Buffer'
@@ -64,44 +67,25 @@ nmap_leader("da", '<Cmd>lua require("dap").toggle_breakpoint()<CR>', "Add breakp
 nmap_leader("dc", breakpoint_condition, "Breakpoint condition")
 
 -- e is for 'Explore'
-local explore_at_file = "<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>"
-nmap_leader("ef", explore_at_file, "File directory")
-nmap_leader("ed", "<Cmd>lua MiniFiles.open()<CR>", "Directory")
-nmap_leader("en", "<Cmd>lua MiniNotify.show_history()<CR>", "Notifications")
+nmap_leader("ed", "<Cmd>lua Snacks.explorer.open()<CR>", "Directory")
+nmap_leader("ef", "<Cmd>lua Snacks.explorer.reveal()<CR>", "File directory")
 
 -- f is for 'Find'
-local pick_added_hunks_buf = '<Cmd>Pick git_hunks path="%" scope="staged"<CR>'
-local pick_workspace_symbols_live = '<Cmd>Pick lsp scope="workspace_symbol_live"<CR>'
-
-nmap_leader("f/", '<Cmd>Pick history scope="/"<CR>', '"/" history')
-nmap_leader("f:", '<Cmd>Pick history scope=":"<CR>', '":" history')
-nmap_leader("fa", '<Cmd>Pick git_hunks scope="staged"<CR>', "Added hunks (all)")
-nmap_leader("fA", pick_added_hunks_buf, "Added hunks (buf)")
-nmap_leader("fb", "<Cmd>Pick buffers<CR>", "Buffers")
-nmap_leader("fc", "<Cmd>Pick git_commits<CR>", "Commits (all)")
-nmap_leader("fC", '<Cmd>Pick git_commits path="%"<CR>', "Commits (buf)")
-nmap_leader("fd", '<Cmd>Pick diagnostic scope="all"<CR>', "Diagnostic workspace")
-nmap_leader("fD", '<Cmd>Pick diagnostic scope="current"<CR>', "Diagnostic buffer")
-nmap_leader("ff", "<Cmd>Pick files<CR>", "Files")
-nmap_leader("fg", "<Cmd>Pick grep_live<CR>", "Grep live")
-nmap_leader("fG", '<Cmd>Pick grep pattern="<cword>"<CR>', "Grep current word")
-nmap_leader("fh", "<Cmd>Pick help<CR>", "Help tags")
-nmap_leader("fH", "<Cmd>Pick hl_groups<CR>", "Highlight groups")
-nmap_leader("fl", '<Cmd>Pick buf_lines scope="all"<CR>', "Lines (all)")
-nmap_leader("fL", '<Cmd>Pick buf_lines scope="current"<CR>', "Lines (buf)")
-nmap_leader("fm", "<Cmd>Pick git_hunks<CR>", "Modified hunks (all)")
-nmap_leader("fM", '<Cmd>Pick git_hunks path="%"<CR>', "Modified hunks (buf)")
-nmap_leader("fr", "<Cmd>Pick resume<CR>", "Resume")
-nmap_leader("fR", '<Cmd>Pick lsp scope="references"<CR>', "References (LSP)")
-nmap_leader("fs", pick_workspace_symbols_live, "Symbols workspace (live)")
-nmap_leader("fS", '<Cmd>Pick lsp scope="document_symbol"<CR>', "Symbols document")
-nmap_leader("fv", '<Cmd>Pick visit_paths cwd=""<CR>', "Visit paths (all)")
-nmap_leader("fV", "<Cmd>Pick visit_paths<CR>", "Visit paths (cwd)")
+nmap_leader("ff", "<Cmd>lua Snacks.picker.files()<CR>", "Files")
+nmap_leader("fG", '<Cmd>lua Snacks.picker.grep_word()<CR>', "Grep current word")
+nmap_leader("fm", "<Cmd>lua Snacks.picker.git_diff()<CR>", "Modified hunks (all)")
+nmap_leader("fd", '<Cmd>lua Snacks.picker.diagnostics()<CR>', "Diagnostic workspace")
+nmap_leader("fD", '<Cmd>lua Snacks.picker.diagnostics_buffer()<CR>', "Diagnostic buffer")
+nmap_leader("fc", "<Cmd>lua Snacks.picker.git_log()<CR>", "Commits (all)")
+nmap_leader("fC", '<Cmd>lua Snacks.picker.git_log_file()<CR>', "Commits (buf)")
+nmap_leader("fB", '<Cmd>lua Snacks.picker.git_log_line()<CR>', "Commits (line)")
 
 -- g is for 'Git'
 local git_log_cmd = [[Git log --pretty=format:\%h\ \%as\ │\ \%s --topo-order]]
 local git_log_buf_cmd = git_log_cmd .. " --follow -- %"
 
+nmap_leader("gb", "<Cmd>lua Snacks.git.blame_line()<CR>", "Blame at cursor")
+nmap_leader("gx", "<Cmd>lua Snacks.gitbrowse.open()<CR>", "Browse remote")
 nmap_leader("ga", "<Cmd>Git diff --cached<CR>", "Added diff")
 nmap_leader("gA", "<Cmd>Git diff --cached -- %<CR>", "Added diff buffer")
 nmap_leader("gc", "<Cmd>Git commit<CR>", "Commit")
@@ -127,14 +111,14 @@ nmap_leader("sw", "<Cmd>lua MiniSessions.write()<CR>", "Write current")
 local test_output = '<Cmd>lua require("neotest").output.open({enter=true,auto_close=true})<CR>'
 local test_debug_nearest = '<Cmd>lua require("neotest").run.run({suite=false,strategy="dap"})<CR>'
 
-nmap_leader("n", "<leader>ta", '<Cmd>lua require("neotest").run.attach()<CR>', "Attach")
-nmap_leader("n", "<leader>tf", '<Cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', "Run file")
-nmap_leader("n", "<leader>tA", '<Cmd>lua require("neotest").run.run(vim.uv.cwd())<CR>', "All files")
-nmap_leader("n", "<leader>tS", '<Cmd>lua require("neotest").run.run({suite=true}) end<CR>', "Suite")
-nmap_leader("n", "<leader>tn", '<Cmd>lua require("neotest").run.run()<CR>', "Nearest")
-nmap_leader("n", "<leader>tl", '<Cmd>lua require("neotest").run.run_last()<CR>', "Last test")
-nmap_leader("n", "<leader>ts", '<Cmd>lua require("neotest").summary.toggle()<CR>', "Summary")
-nmap_leader("n", "<leader>to", test_output, "Show output")
-nmap_leader("n", "<leader>tO", '<Cmd>lua require("neotest").output_panel.toggle()<CR>', "Show output panel")
-nmap_leader("n", "<leader>tt", '<Cmd>lua require("neotest").run.stop()<CR>', "Terminate")
-nmap_leader("n", "<leader>td", test_debug_nearest, "Debug nearest")
+nmap_leader("ta", '<Cmd>lua require("neotest").run.attach()<CR>', "Attach")
+nmap_leader("tf", '<Cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', "Run file")
+nmap_leader("tA", '<Cmd>lua require("neotest").run.run(vim.uv.cwd())<CR>', "All files")
+nmap_leader("tS", '<Cmd>lua require("neotest").run.run({suite=true}) end<CR>', "Suite")
+nmap_leader("tn", '<Cmd>lua require("neotest").run.run()<CR>', "Nearest")
+nmap_leader("tl", '<Cmd>lua require("neotest").run.run_last()<CR>', "Last test")
+nmap_leader("ts", '<Cmd>lua require("neotest").summary.toggle()<CR>', "Summary")
+nmap_leader("to", test_output, "Show output")
+nmap_leader("tO", '<Cmd>lua require("neotest").output_panel.toggle()<CR>', "Show output panel")
+nmap_leader("tt", '<Cmd>lua require("neotest").run.stop()<CR>', "Terminate")
+nmap_leader("td", test_debug_nearest, "Debug nearest")
