@@ -125,9 +125,8 @@ later(function()
     group = vim.api.nvim_create_augroup("dadbod-completion", { clear = true }),
     callback = function()
       vim.bo.omnifunc = "vim_dadbod_completion#omni"
-      vim.b.minicompletion_config = {
-        fallback_action = "<C-x><C-o>",
-      }
+      vim.b.minisnippets_disable = true
+      vim.b.minicompletion_config = { fallback_action = "<C-x><C-o>" }
     end,
   })
 end)

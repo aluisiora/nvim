@@ -89,9 +89,7 @@ now_if_args(function()
   vim.g.snacks_animate = false
   vim.api.nvim_create_autocmd("User", {
     pattern = "MiniFilesActionRename",
-    callback = function(event)
-      Snacks.rename.on_rename_file(event.data.from, event.data.to)
-    end,
+    callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
   })
 
   -- fff
@@ -110,6 +108,13 @@ now_if_args(function()
   -- fff & snacks
   add("madmaxieee/fff-snacks.nvim")
   require("fff-snacks").setup()
+
+  -- disable completion on inputs
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "fff_input", "snacks_picker_input", "snacks_input" },
+    group = vim.api.nvim_create_augroup("disable-mini-completion", { clear = true }),
+    callback = function() vim.b.minicompletion_disable = true end,
+  })
 end)
 
 -- undotree

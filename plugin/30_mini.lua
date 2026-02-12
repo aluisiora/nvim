@@ -56,13 +56,15 @@ now_if_args(function()
     desc = "Set 'omnifunc'",
     callback = function(event)
       vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
-      vim.bo[event.buf].completeopt = "menuone,noselect,noinsert,fuzzy"
+      vim.bo[event.buf].completeopt = "menuone,noselect,fuzzy,nosort"
     end,
   })
 
   -- Advertise to servers that Neovim now supports certain set of completion and
   -- signature features through 'mini.completion'.
-  vim.lsp.config("*", { capabilities = MiniCompletion.get_lsp_capabilities() })
+  local capabilities = MiniCompletion.get_lsp_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = false
+  vim.lsp.config("*", { capabilities = capabilities })
 end)
 
 -- Miscellaneous small but useful functions.
