@@ -1,4 +1,5 @@
 local now, later = MiniDeps.now, MiniDeps.later
+local now_if_args = _G.Config.now_if_args
 
 -- Icon provider. Usually no need to use manually. It is used by plugins like
 -- 'mini.pick', 'mini.files', 'mini.statusline', and others.
@@ -27,6 +28,44 @@ now(function() require("mini.starter").setup() end)
 
 -- Statusline. Sets `:h 'statusline'` to show more info in a line below window.
 now(function() require("mini.statusline").setup() end)
+
+-- Completion and signature help. Implements async "two stage" autocompletion:
+-- - Based on attached LSP servers that support completion.
+-- - Fallback (based on built-in keyword completion) if there is no LSP candidates.
+now_if_args(function()
+  -- Customize post-processing of LSP responses for a better user experience.
+  -- Don't show 'Text' suggestions (usually noisy) and show snippets last.
+  local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
+  local process_items = function(items, base)
+    return MiniCompletion.default_process_items(items, base, process_items_opts)
+  end
+  require("mini.completion").setup({
+    lsp_completion = {
+      -- Without this config autocompletion is set up through `:h 'completefunc'`.
+      -- Although not needed, setting up through `:h 'omnifunc'` is cleaner
+      -- (sets up only when needed) and makes it possible to use `<C-u>`.
+      source_func = "omnifunc",
+      auto_setup = false,
+      process_items = process_items,
+    },
+  })
+
+  -- Set 'omnifunc' for LSP completion only when needed.
+  vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("mini-lsp-completion", { clear = true }),
+    desc = "Set 'omnifunc'",
+    callback = function(event)
+      vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+      vim.bo[event.buf].completeopt = "menuone,noselect,fuzzy,nosort"
+    end,
+  })
+
+  -- Advertise to servers that Neovim now supports certain set of completion and
+  -- signature features through 'mini.completion'.
+  local capabilities = MiniCompletion.get_lsp_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = false
+  vim.lsp.config("*", { capabilities = capabilities })
+end)
 
 -- Miscellaneous small but useful functions.
 later(function() require("mini.extra").setup() end)
@@ -159,6 +198,31 @@ end)
 later(function()
   -- Create pairs not only in Insert, but also in Command line mode
   require("mini.pairs").setup({ modes = { command = true } })
+end)
+
+-- Manage and expand snippets (templates for a frequently used text).
+-- Typical workflow is to type snippet's (configurable) prefix and expand it
+-- into a snippet session.
+later(function()
+  -- Define language patterns to work better with 'friendly-snippets'
+  local latex_patterns = { "latex/**/*.json", "**/latex.json" }
+  local lang_patterns = {
+    tex = latex_patterns,
+    plaintex = latex_patterns,
+    -- Recognize special injected language of markdown tree-sitter parser
+    markdown_inline = { "markdown.json" },
+  }
+
+  local snippets = require("mini.snippets")
+  local config_path = vim.fn.stdpath("config")
+  snippets.setup({
+    snippets = {
+      -- Always load 'snippets/global.json' from config directory
+      snippets.gen_loader.from_file(config_path .. "/snippets/global.json"),
+      -- Load from 'snippets/' directory of plugins, like 'friendly-snippets'
+      snippets.gen_loader.from_lang({ lang_patterns = lang_patterns }),
+    },
+  })
 end)
 
 -- Split and join arguments (regions inside brackets between allowed separators).
