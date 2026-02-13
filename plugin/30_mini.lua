@@ -223,6 +223,30 @@ later(function()
       snippets.gen_loader.from_lang({ lang_patterns = lang_patterns }),
     },
   })
+
+  -- Stop session immediately after jumping to final tabstop
+  local fin_stop = function(args)
+    if args.data.tabstop_to == "0" then MiniSnippets.session.stop() end
+  end
+  local au_opts = { pattern = "MiniSnippetsSessionJump", callback = fin_stop }
+  vim.api.nvim_create_autocmd("User", au_opts)
+
+  -- Stop all sessions on Normal mode exit
+  local make_stop = function()
+    local au_opts = { pattern = "*:n", once = true }
+    au_opts.callback = function()
+      while MiniSnippets.session.get() do
+        MiniSnippets.session.stop()
+      end
+    end
+    vim.api.nvim_create_autocmd("ModeChanged", au_opts)
+  end
+  local opts = { pattern = "MiniSnippetsSessionStart", callback = make_stop }
+  vim.api.nvim_create_autocmd("User", opts)
+
+  -- By default snippets available at cursor are not shown as candidates in
+  -- 'mini.completion' menu. This requires a dedicated in-process LSP server.
+  MiniSnippets.start_lsp_server()
 end)
 
 -- Split and join arguments (regions inside brackets between allowed separators).
