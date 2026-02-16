@@ -54,15 +54,12 @@ now_if_args(function()
   vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("mini-lsp-completion", { clear = true }),
     desc = "Set 'omnifunc'",
-    callback = function(event)
-      vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
-    end,
+    callback = function(event) vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp" end,
   })
 
   -- Advertise to servers that Neovim now supports certain set of completion and
   -- signature features through 'mini.completion'.
   local capabilities = MiniCompletion.get_lsp_capabilities()
-  capabilities.textDocument.completion.completionItem.snippetSupport = false
   vim.lsp.config("*", { capabilities = capabilities })
 end)
 
@@ -186,11 +183,19 @@ later(function()
 end)
 
 -- Move any selection in any direction.
-later(function()
-  require("mini.move").setup({
-    options = { reindent_linewise = true },
-  })
-end)
+later(
+  function()
+    require("mini.move").setup({
+      mappings = {
+        left = "H",
+        right = "L",
+        down = "J",
+        up = "K",
+      },
+      options = { reindent_linewise = true },
+    })
+  end
+)
 
 -- Autopairs functionality. Insert pair when typing opening character and go over
 -- right character if it is already to cursor's right.
