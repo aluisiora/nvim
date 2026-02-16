@@ -29,40 +29,6 @@ now(function() require("mini.starter").setup() end)
 -- Statusline. Sets `:h 'statusline'` to show more info in a line below window.
 now(function() require("mini.statusline").setup() end)
 
--- Completion and signature help. Implements async "two stage" autocompletion:
--- - Based on attached LSP servers that support completion.
--- - Fallback (based on built-in keyword completion) if there is no LSP candidates.
-now_if_args(function()
-  -- Customize post-processing of LSP responses for a better user experience.
-  -- Don't show 'Text' suggestions (usually noisy) and show snippets last.
-  local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
-  local process_items = function(items, base)
-    return MiniCompletion.default_process_items(items, base, process_items_opts)
-  end
-  require("mini.completion").setup({
-    lsp_completion = {
-      -- Without this config autocompletion is set up through `:h 'completefunc'`.
-      -- Although not needed, setting up through `:h 'omnifunc'` is cleaner
-      -- (sets up only when needed) and makes it possible to use `<C-u>`.
-      source_func = "omnifunc",
-      auto_setup = false,
-      process_items = process_items,
-    },
-  })
-
-  -- Set 'omnifunc' for LSP completion only when needed.
-  vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("mini-lsp-completion", { clear = true }),
-    desc = "Set 'omnifunc'",
-    callback = function(event) vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp" end,
-  })
-
-  -- Advertise to servers that Neovim now supports certain set of completion and
-  -- signature features through 'mini.completion'.
-  local capabilities = MiniCompletion.get_lsp_capabilities()
-  vim.lsp.config("*", { capabilities = capabilities })
-end)
-
 -- Miscellaneous small but useful functions.
 later(function() require("mini.extra").setup() end)
 

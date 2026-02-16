@@ -14,23 +14,66 @@ later(function()
   require("agentic").setup({
     provider = "gemini-acp",
   })
-
-  add({
-    source = "CopilotC-Nvim/CopilotChat.nvim",
-    depends = { "nvim-lua/plenary.nvim" },
-  })
-  require("CopilotChat").setup()
 end)
 
--- Language servers ===========================================================
+-- Snippets ===================================================================
 
--- Mason
+-- Although 'mini.snippets' provides functionality to manage snippet files, it
+-- deliberately doesn't come with those.
+later(function() add("rafamadriz/friendly-snippets") end)
+
+-- Completions ================================================================
+later(function()
+  add({
+    source = "saghen/blink.cmp",
+    checkout = "v1.9.1",
+  })
+  add("kristijanhusak/vim-dadbod-completion")
+  local blink = require("blink.cmp")
+  blink.setup({
+    keymap = {
+      preset = "none",
+      ["<C-space>"] = { "show", "fallback" },
+      ["<C-n>"] = { "select_next", "fallback" },
+      ["<C-p>"] = { "select_prev", "fallback" },
+      ["<C-e>"] = { "cancel" },
+      ["<C-y>"] = { "accept" },
+      ["<C-k>"] = { "show_documentation", "hide_documentation", "fallback" },
+      ["<Esc>"] = { "fallback" },
+      ["<CR>"] = { "fallback" },
+    },
+    cmdline = { enabled = false },
+    fuzzy = { implementation = "prefer_rust_with_warning" },
+    completion = {
+      documentation = { auto_show = true, auto_show_delay_ms = 500 },
+      menu = { auto_show_delay_ms = 300 },
+      accept = { auto_brackets = { enabled = false } },
+      list = { selection = { preselect = false, auto_insert = true } },
+      ghost_text = { enabled = false },
+    },
+    signature = { enabled = true },
+    snippets = { preset = "mini_snippets" },
+    sources = {
+      default = { "lsp", "snippets", "path", "buffer" },
+      per_filetype = {
+        sql = { "dadbod", "lsp", "snippets", "buffer" },
+        mysql = { "dadbod", "lsp", "snippets", "buffer" },
+      },
+      providers = {
+        dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+      },
+    },
+  })
+  vim.lsp.config("*", { capabilities = blink.get_lsp_capabilities() })
+end)
+
+-- Mason ======================================================================
 now_if_args(function()
   add("mason-org/mason.nvim")
   require("mason").setup({})
 end)
 
--- LSPs
+-- Language servers ===========================================================
 later(function()
   add("j-hui/fidget.nvim")
   require("fidget").setup()
@@ -113,26 +156,11 @@ later(function()
   })
 end)
 
--- Snippets ===================================================================
-
--- Although 'mini.snippets' provides functionality to manage snippet files, it
--- deliberately doesn't come with those.
-later(function() add("rafamadriz/friendly-snippets") end)
-
 -- Database integration =======================================================
 later(function()
   vim.g.db_ui_use_nerd_fonts = 1
   add("tpope/vim-dadbod")
   add("kristijanhusak/vim-dadbod-ui")
-  add("kristijanhusak/vim-dadbod-completion")
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "sql", "mysql", "plsql" },
-    group = vim.api.nvim_create_augroup("dadbod-completion", { clear = true }),
-    callback = function()
-      vim.bo.omnifunc = "vim_dadbod_completion#omni"
-      vim.b.minicompletion_config = { fallback_action = "<C-x><C-o>" }
-    end,
-  })
 end)
 
 -- API testing with Hurl ======================================================
