@@ -10,6 +10,11 @@ end
 
 -- AI Slop ====================================================================
 later(function()
+  add("carlos-algms/agentic.nvim")
+  require("agentic").setup({
+    provider = "gemini-acp",
+  })
+
   add({
     source = "CopilotC-Nvim/CopilotChat.nvim",
     depends = { "nvim-lua/plenary.nvim" },
