@@ -2,6 +2,7 @@
 local nmap = function(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { desc = desc }) end
 local nmap_leader = function(suffix, rhs, desc) vim.keymap.set("n", "<Leader>" .. suffix, rhs, { desc = desc }) end
 local xmap_leader = function(suffix, rhs, desc) vim.keymap.set("x", "<Leader>" .. suffix, rhs, { desc = desc }) end
+local vmap_leader = function(suffix, rhs, desc) vim.keymap.set("v", "<Leader>" .. suffix, rhs, { desc = desc }) end
 local lsp_maps = {}
 local nmap_lsp = function(lhs, rhs, desc) table.insert(lsp_maps, { lhs = lhs, rhs = rhs, desc = desc }) end
 
@@ -16,14 +17,25 @@ nmap("]r", "<Cmd>lua Snacks.words.jump(1)<CR>", "next word reference")
 nmap("[r", "<Cmd>lua Snacks.words.jump(-1)<CR>", "previous word reference")
 
 -- Language mappings ===============================================================
-nmap_lsp("grd", "<Cmd>lua vim.lsp.buf.definition()<CR>", "Source definitions")
-nmap_lsp("gW", "<Cmd>lua vim.lsp.buf.workspace_symbol()<CR>", "Workpace symbols")
+nmap_lsp("gW", "<Cmd>lua Snacks.picker.lsp_workspace_symbols()<CR>", "Workpace symbols")
+nmap_lsp("gO", "<Cmd>lua Snacks.picker.lsp_symbols()<CR>", "Document symbols")
+nmap_lsp("grd", "<Cmd>lua Snacks.picker.lsp_definitions()<CR>", "Source definition")
+nmap_lsp("grD", "<Cmd>lua Snacks.picker.lsp_declarations()<CR>", "Source declaration")
+nmap_lsp("grr", "<Cmd>lua Snacks.picker.lsp_references()<CR>", "References")
+nmap_lsp("gri", "<Cmd>lua Snacks.picker.lsp_implementations()<CR>", "Implementations")
+nmap_lsp("gry", "<Cmd>lua Snacks.picker.lsp_type_definitions()<CR>", "Type definition")
+nmap_lsp("grI", "<Cmd>lua Snacks.picker.lsp_incoming_calls()<CR>", "Calls incoming")
+nmap_lsp("grO", "<Cmd>lua Snacks.picker.lsp_outgoing_calls()<CR>", "Calls outgoing")
 nmap("grN", "<Cmd>lua Snacks.rename.rename_file()<CR>", "Rename file")
 nmap("grf", '<Cmd>lua require("conform").format()<CR>', "Format file")
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("custom-lsp-attach", { clear = true }),
   callback = function(event)
+    local default_mapping = { "grr", "gri", "grt", "gO" }
+    for _, m in ipairs(default_mapping) do
+      pcall(vim.keymap.del, "n", m)
+    end
     for _, m in ipairs(lsp_maps) do
       vim.keymap.set("n", m.lhs, m.rhs, { desc = m.desc, buffer = event.buf })
     end
@@ -32,6 +44,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- Leader mappings ============================================================
 _G.Config.leader_group_clues = {
+  { mode = "n", keys = "<Leader>a", desc = "+AI" },
   { mode = "n", keys = "<Leader>b", desc = "+Buffer" },
   { mode = "n", keys = "<Leader>d", desc = "+Debug" },
   { mode = "n", keys = "<Leader>e", desc = "+Explore" },
@@ -43,11 +56,19 @@ _G.Config.leader_group_clues = {
 }
 
 -- special leader direct keymaps
-nmap_leader("/", '<Cmd>lua Snacks.picker.grep()<CR>', 'Grep search')
-nmap_leader(":", '<Cmd>lua Snacks.picker.command_history()<CR>', 'Command history')
-nmap_leader(",", '<Cmd>lua Snacks.picker.buffers()<CR>', 'Open buffers')
-nmap_leader(".", '<Cmd>lua Snacks.picker.recent()<CR>', 'Recent files')
-nmap_leader("<space>", '<Cmd>FFFSnacks<CR>', "Fuzzy find")
+nmap_leader("/", "<Cmd>lua Snacks.picker.grep()<CR>", "Grep search")
+nmap_leader(":", "<Cmd>lua Snacks.picker.command_history()<CR>", "Command history")
+nmap_leader(",", "<Cmd>lua Snacks.picker.buffers()<CR>", "Open buffers")
+nmap_leader(".", "<Cmd>lua Snacks.picker.recent()<CR>", "Recent files")
+nmap_leader("<space>", "<Cmd>FFFSnacks<CR>", "Fuzzy find")
+
+-- a for 'Slop'
+nmap_leader("ac", '<Cmd>lua require("agentic").toggle()<CR>', "Chat")
+nmap_leader("an", '<Cmd>lua require("agentic").new_session()<CR>', "New session")
+nmap_leader("ar", '<Cmd>lua require("agentic").restore_session()<CR>', "Restore session")
+nmap_leader("as", '<Cmd>lua require("agentic").stop_generation()<CR>', "Stop generation")
+nmap_leader("aa", '<Cmd>lua require("agentic").add_file()<CR>', "Add file")
+vmap_leader("aa", '<Cmd>lua require("agentic").add_selection()<CR>', "Add selection")
 
 -- b is for 'Buffer'
 nmap_leader("ba", "<Cmd>b#<CR>", "Alternate")
@@ -72,13 +93,13 @@ nmap_leader("ef", "<Cmd>lua Snacks.explorer.reveal()<CR>", "File directory")
 
 -- f is for 'Find'
 nmap_leader("ff", "<Cmd>lua Snacks.picker.files()<CR>", "Files")
-nmap_leader("fG", '<Cmd>lua Snacks.picker.grep_word()<CR>', "Grep current word")
+nmap_leader("fG", "<Cmd>lua Snacks.picker.grep_word()<CR>", "Grep current word")
 nmap_leader("fm", "<Cmd>lua Snacks.picker.git_diff()<CR>", "Modified hunks (all)")
-nmap_leader("fd", '<Cmd>lua Snacks.picker.diagnostics()<CR>', "Diagnostic workspace")
-nmap_leader("fD", '<Cmd>lua Snacks.picker.diagnostics_buffer()<CR>', "Diagnostic buffer")
+nmap_leader("fd", "<Cmd>lua Snacks.picker.diagnostics()<CR>", "Diagnostic workspace")
+nmap_leader("fD", "<Cmd>lua Snacks.picker.diagnostics_buffer()<CR>", "Diagnostic buffer")
 nmap_leader("fc", "<Cmd>lua Snacks.picker.git_log()<CR>", "Commits (all)")
-nmap_leader("fC", '<Cmd>lua Snacks.picker.git_log_file()<CR>', "Commits (buf)")
-nmap_leader("fB", '<Cmd>lua Snacks.picker.git_log_line()<CR>', "Commits (line)")
+nmap_leader("fC", "<Cmd>lua Snacks.picker.git_log_file()<CR>", "Commits (buf)")
+nmap_leader("fB", "<Cmd>lua Snacks.picker.git_log_line()<CR>", "Commits (line)")
 
 -- g is for 'Git'
 local git_log_cmd = [[Git log --pretty=format:\%h\ \%as\ │\ \%s --topo-order]]
