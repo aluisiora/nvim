@@ -48,6 +48,7 @@ now_if_args(function()
       auto_setup = false,
       process_items = process_items,
     },
+    mappings = { force_twostep = "<C-n>" },
   })
 
   -- Set 'omnifunc' for LSP completion only when needed.
