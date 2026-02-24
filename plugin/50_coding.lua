@@ -125,16 +125,13 @@ later(function()
   add("tpope/vim-dadbod")
   add("kristijanhusak/vim-dadbod-ui")
   add("kristijanhusak/vim-dadbod-completion")
-  vim.filetype.add({
-    extension = { mysql = "sql" },
-    pattern = { ["dbui_query_.*"] = "sql" },
-  })
   vim.api.nvim_create_autocmd("FileType", {
     pattern = { "sql", "mysql", "plsql" },
     group = vim.api.nvim_create_augroup("dadbod-completion", { clear = true }),
     callback = function()
       vim.bo.omnifunc = "vim_dadbod_completion#omni"
       vim.b.minicompletion_config = { fallback_action = "<C-x><C-o>" }
+      vim.bo.commentstring = "-- %s"
     end,
   })
 end)
