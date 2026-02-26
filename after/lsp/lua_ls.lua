@@ -1,7 +1,7 @@
 return {
   cmd = { "lua-language-server" },
   filetypes = { "lua" },
-  root_markers = { ".luarc.json", ".git", vim.uv.cwd() },
+  root_markers = { ".luarc.json", "init.lua", ".git", vim.uv.cwd() },
   on_attach = function(client, buf_id)
     -- Reduce very long list of triggers for better 'mini.completion' experience
     client.server_capabilities.completionProvider.triggerCharacters =

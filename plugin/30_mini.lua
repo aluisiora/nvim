@@ -116,12 +116,6 @@ later(function()
   })
 end)
 
--- Command line tweaks. Improves command line editing with:
--- - Autocompletion. Basically an automated `:h cmdline-completion`.
--- - Autocorrection of words as-you-type. Like `:W`->`:w`, `:lau`->`:lua`, etc.
--- - Autopeek command range (like line number at the start) as-you-type.
-later(function() require("mini.cmdline").setup() end)
-
 -- Comment lines. Provides functionality to work with commented lines.
 -- Uses `:h 'commentstring'` option to infer comment structure.
 later(function() require("mini.comment").setup() end)
@@ -199,10 +193,7 @@ later(
 
 -- Autopairs functionality. Insert pair when typing opening character and go over
 -- right character if it is already to cursor's right.
-later(function()
-  -- Create pairs not only in Insert, but also in Command line mode
-  require("mini.pairs").setup({ modes = { command = true } })
-end)
+later(function() require("mini.pairs").setup() end)
 
 -- Manage and expand snippets (templates for a frequently used text).
 -- Typical workflow is to type snippet's (configurable) prefix and expand it
