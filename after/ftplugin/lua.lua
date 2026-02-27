@@ -1,5 +1,5 @@
 -- mini.splijoin
-local gen_hook = MiniSplitjoin.gen_hook
+local gen_hook = require('mini.splitjoin').gen_hook
 local curly = { brackets = { "%b{}" } }
 -- Add trailing comma when splitting inside curly brackets
 local add_comma_curly = gen_hook.add_trailing_separator(curly)
