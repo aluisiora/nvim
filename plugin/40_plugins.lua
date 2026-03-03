@@ -29,7 +29,6 @@ now_if_args(function()
   })
 
   local ts = require("nvim-treesitter")
-  ts.setup()
   ts.install({
     "lua",
     "vim",
@@ -91,7 +90,9 @@ now_if_args(function()
     pattern = "MiniFilesActionRename",
     callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
   })
+end)
 
+later(function ()
   -- fff
   add({
     source = "dmtrKovalenko/fff.nvim",
@@ -107,7 +108,6 @@ now_if_args(function()
 
   -- fff & snacks
   add("madmaxieee/fff-snacks.nvim")
-  require("fff-snacks").setup()
 
   -- disable completion on inputs
   vim.api.nvim_create_autocmd("FileType", {
