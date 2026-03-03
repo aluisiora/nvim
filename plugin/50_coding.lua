@@ -106,6 +106,7 @@ end)
 later(function() add("rafamadriz/friendly-snippets") end)
 
 -- Database integration =======================================================
+
 later(function()
   vim.g.db_ui_use_nerd_fonts = 1
   add("tpope/vim-dadbod")
@@ -259,4 +260,11 @@ later(function()
   -- neotest
   local neotest = require("neotest")
   neotest.setup({ adapters = adapters })
+
+  -- extra keymaps
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "neotest-output" },
+    group = vim.api.nvim_create_augroup("neotest-output-keymaps", { clear = true }),
+    callback = function(ev) vim.keymap.set("n", "q", "<Cmd>close<CR>", { desc = "Close panel", buffer = ev.buf }) end,
+  })
 end)
