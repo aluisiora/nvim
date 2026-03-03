@@ -89,7 +89,7 @@ nmap_leader("dc", breakpoint_condition, "Breakpoint condition")
 
 -- e is for 'Explore'
 nmap_leader("ed", "<Cmd>lua Snacks.explorer.open()<CR>", "Directory")
-nmap_leader("ef", "<Cmd>lua Snacks.explorer.reveal()<CR>", "File directory")
+nmap_leader("ef", "<Cmd>SnacksExplorerFocus<CR>", "Focus")
 
 -- f is for 'Find'
 nmap_leader("ff", "<Cmd>lua Snacks.picker.files()<CR>", "Files")

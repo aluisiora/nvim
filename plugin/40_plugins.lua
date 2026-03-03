@@ -90,9 +90,32 @@ now_if_args(function()
     pattern = "MiniFilesActionRename",
     callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
   })
+
+  local get_explorer_win = function()
+    local explorer_win = nil
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      local ft = vim.bo[buf].filetype
+      if ft == "snacks_picker_list" then
+        explorer_win = win
+        break
+      end
+    end
+    if vim.api.nvim_get_current_win() ~= explorer_win and explorer_win then return explorer_win end
+    return nil
+  end
+
+  vim.api.nvim_create_user_command("SnacksExplorerFocus", function()
+    local explorer_win = get_explorer_win()
+    if explorer_win then
+      vim.api.nvim_set_current_win(explorer_win)
+      return
+    end
+    Snacks.explorer.reveal()
+  end, {})
 end)
 
-later(function ()
+later(function()
   -- fff
   add({
     source = "dmtrKovalenko/fff.nvim",
