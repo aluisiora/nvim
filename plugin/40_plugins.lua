@@ -88,7 +88,9 @@ now_if_args(function()
   vim.g.snacks_animate = false
   vim.api.nvim_create_autocmd("User", {
     pattern = "MiniFilesActionRename",
-    callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
+    callback = function(event)
+      Snacks.rename.on_rename_file(event.data.from, event.data.to)
+    end,
   })
 
   local get_explorer_win = function()
@@ -101,7 +103,9 @@ now_if_args(function()
         break
       end
     end
-    if vim.api.nvim_get_current_win() ~= explorer_win and explorer_win then return explorer_win end
+    if vim.api.nvim_get_current_win() ~= explorer_win and explorer_win then
+      return explorer_win
+    end
     return nil
   end
 
@@ -119,7 +123,11 @@ later(function()
   -- fff
   add({
     source = "dmtrKovalenko/fff.nvim",
-    hooks = { post_checkout = function() require("fff.download").download_or_build_binary() end },
+    hooks = {
+      post_checkout = function()
+        require("fff.download").download_or_build_binary()
+      end,
+    },
   })
   vim.g.fff = {
     prompt = "󰄾 ",
@@ -135,7 +143,10 @@ later(function()
   -- disable completion on inputs
   vim.api.nvim_create_autocmd("FileType", {
     pattern = { "fff_input", "snacks_picker_input", "snacks_input" },
-    group = vim.api.nvim_create_augroup("disable-mini-completion", { clear = true }),
+    group = vim.api.nvim_create_augroup(
+      "disable-mini-completion",
+      { clear = true }
+    ),
     callback = function() vim.b.minicompletion_disable = true end,
   })
 end)

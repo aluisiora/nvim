@@ -6,22 +6,29 @@ local Path = require("plenary.path")
 local NeotestAdapter = { name = "neotest-codeception" }
 
 -- Detect Codeception test files
-function NeotestAdapter.is_test_file(file_path) return file_path:match("Test%.php$") or file_path:match("Cest%.php$") end
+function NeotestAdapter.is_test_file(file_path)
+  return file_path:match("Test%.php$") or file_path:match("Cest%.php$")
+end
 
 -- Determine project root
 function NeotestAdapter.root(dir)
-  return lib.files.match_root_pattern("codeception.yml", "codeception.dist.yml", "composer.json")(dir)
+  return lib.files.match_root_pattern(
+    "codeception.yml",
+    "codeception.dist.yml",
+    "composer.json"
+  )(dir)
 end
 
 -- Filter directories to ignore non-test folders
-function NeotestAdapter.filter_dir(name, rel_path, root)
+function NeotestAdapter.filter_dir(name, rel_path, _)
   if name == "tests" or name == "test" then return true end
 
   return rel_path:match("^tests?/")
 end
 
 function NeotestAdapter.make_test_id(position)
-  local class = vim.fn.fnamemodify(vim.fn.fnamemodify(position.path, ":r"), ":t")
+  local class =
+    vim.fn.fnamemodify(vim.fn.fnamemodify(position.path, ":r"), ":t")
   return class .. ":" .. position.name
 end
 
@@ -93,13 +100,19 @@ local function generate_result(value, result, xml_content)
   end
 
   if value.type == "test" then
-    if xml_content:match('<testcase[^>]-name="' .. value.name .. '"[^>]-/>') then
+    if
+      xml_content:match('<testcase[^>]-name="' .. value.name .. '"[^>]-/>')
+    then
       return {
         status = types.ResultStatus.passed,
       }
     end
 
-    local error = xml_content:match('<testcase[^>]-name="' .. value.name .. '".-<failure[^>]->([^<]-)</failure>')
+    local error = xml_content:match(
+      '<testcase[^>]-name="'
+        .. value.name
+        .. '".-<failure[^>]->([^<]-)</failure>'
+    )
     if error then
       return {
         status = types.ResultStatus.failed,

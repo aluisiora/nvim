@@ -6,7 +6,9 @@ local Path = require("plenary.path")
 local NeotestAdapter = { name = "neotest-codeception-gherkin" }
 
 -- Detect cucumber feature files
-function NeotestAdapter.is_test_file(file_path) return file_path:match("%.feature$") end
+function NeotestAdapter.is_test_file(file_path)
+  return file_path:match("%.feature$")
+end
 
 -- Determine project root
 function NeotestAdapter.root(dir)
@@ -20,7 +22,7 @@ function NeotestAdapter.root(dir)
 end
 
 -- Filter directories to ignore non-test folders
-function NeotestAdapter.filter_dir(name, rel_path, root)
+function NeotestAdapter.filter_dir(name, rel_path, _)
   if name == "tests" or name == "test" then return true end
 
   return rel_path:match("^tests?/")
@@ -109,13 +111,19 @@ local function generate_result(value, result, xml_content)
   end
 
   if value.type == "test" then
-    if xml_content:match('<testcase[^>]-name=".+: ' .. value.name .. '"[^>]-/>') then
+    if
+      xml_content:match('<testcase[^>]-name=".+: ' .. value.name .. '"[^>]-/>')
+    then
       return {
         status = types.ResultStatus.passed,
       }
     end
 
-    local error = xml_content:match('<testcase[^>]-name=".+: ' .. value.name .. '".-<failure[^>]->([^<]-)</failure>')
+    local error = xml_content:match(
+      '<testcase[^>]-name=".+: '
+        .. value.name
+        .. '".-<failure[^>]->([^<]-)</failure>'
+    )
     if error then
       return {
         status = types.ResultStatus.failed,

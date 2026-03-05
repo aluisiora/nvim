@@ -8,7 +8,9 @@ now(function()
   local ext3_blocklist = { scm = true, txt = true, yml = true }
   local ext4_blocklist = { json = true, yaml = true }
   require("mini.icons").setup({
-    use_file_extension = function(ext, _) return not (ext3_blocklist[ext:sub(-3)] or ext4_blocklist[ext:sub(-4)]) end,
+    use_file_extension = function(ext, _)
+      return not (ext3_blocklist[ext:sub(-3)] or ext4_blocklist[ext:sub(-4)])
+    end,
   })
 
   -- Mock 'nvim-tree/nvim-web-devicons' for plugins without 'mini.icons' support.
@@ -52,9 +54,14 @@ now_if_args(function()
 
   -- Set 'omnifunc' for LSP completion only when needed.
   vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("mini-lsp-completion", { clear = true }),
+    group = vim.api.nvim_create_augroup(
+      "mini-lsp-completion",
+      { clear = true }
+    ),
     desc = "Set 'omnifunc'",
-    callback = function(event) vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp" end,
+    callback = function(event)
+      vim.bo[event.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+    end,
   })
 
   -- Advertise to servers that Neovim now supports certain set of completion and
@@ -130,7 +137,10 @@ later(function() require("mini.diff").setup() end)
 later(function()
   require("mini.files").setup()
   vim.api.nvim_create_autocmd("User", {
-    group = vim.api.nvim_create_augroup("mini-files-bookmarks", { clear = true }),
+    group = vim.api.nvim_create_augroup(
+      "mini-files-bookmarks",
+      { clear = true }
+    ),
     pattern = "MiniFilesExplorerOpen",
     desc = "Add bookmarks",
     callback = function()

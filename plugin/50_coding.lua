@@ -1,13 +1,6 @@
 local add, later = MiniDeps.add, MiniDeps.later
 local now_if_args = _G.Config.now_if_args
 
-local function has(exec) return vim.fn.executable(exec) == 1 end
-local function hasprojectfile(filename)
-  local path = vim.fn.getcwd() .. "/" .. filename
-  local stat = vim.loop.fs_stat(path)
-  return stat ~= nil
-end
-
 -- Language servers ===========================================================
 
 -- Mason
@@ -38,20 +31,10 @@ end)
 -- Flutter
 later(function()
   add("nvim-flutter/flutter-tools.nvim")
-  if has("flutter") then require("flutter-tools").setup({
-    flutter_lookup_cmd = "mise where flutter",
-  }) end
-end)
-
--- PHP
-later(function()
-  add("ccaglak/phptools.nvim")
-  if hasprojectfile("composer.json") then
-    require("phptools").setup()
-    local phputils = require("phputils")
-    vim.api.nvim_create_user_command("PhpFindFQCN", phputils.fqcn_navigate, {})
-    vim.api.nvim_create_user_command("CopyPHPClassFQCN", phputils.copy_fqcn, {})
-    vim.api.nvim_create_user_command("CopyPHPNearMemberFQCN", phputils.copy_fqcn_with_near_member, {})
+  if _G.has_executable("flutter") then
+    require("flutter-tools").setup({
+      flutter_lookup_cmd = "mise where flutter",
+    })
   end
 end)
 
@@ -70,10 +53,14 @@ later(function()
     json = { "fixjson" },
     jsonc = { "fixjson" },
   }
-  if hasprojectfile("pint.json") then formatters.php = { "pint" } end
+  if _G.has_project_file("pint.json") then formatters.php = { "pint" } end
   conform.setup({ notify_on_error = true, formatters_by_ft = formatters })
   local options = { async = true, lsp_format = "fallback" }
-  vim.api.nvim_create_user_command("Format", function() conform.format(options) end, {})
+  vim.api.nvim_create_user_command(
+    "Format",
+    function() conform.format(options) end,
+    {}
+  )
 end)
 
 -- Linting ====================================================================
@@ -158,7 +145,7 @@ later(function()
   }
 
   -- debug.golang
-  if has("go") then require("dap-go").setup() end
+  if _G.has_project_file("go.mod") then require("dap-go").setup() end
 
   -- dap-ui
   local dapui = require("dapui")
@@ -209,7 +196,7 @@ later(function()
   local adapters = {}
 
   -- test.golang
-  if has("go") then
+  if _G.has_project_file("go.mod") then
     table.insert(
       adapters,
       require("neotest-golang")({
@@ -226,8 +213,8 @@ later(function()
   end
 
   -- test.phpunit
-  if has("php") then
-    if hasprojectfile("codeception.yml") then
+  if _G.has_executable("php") then
+    if _G.has_project_file("codeception.yml") then
       table.insert(adapters, require("neotest-codeception"))
       table.insert(adapters, require("neotest-codeception-gherkin"))
     else
@@ -235,7 +222,7 @@ later(function()
     end
   end
 
-  if has("node") then
+  if _G.has_executable("node") then
     -- test.jest
     table.insert(
       adapters,
@@ -264,7 +251,17 @@ later(function()
   -- extra keymaps
   vim.api.nvim_create_autocmd("FileType", {
     pattern = { "neotest-output" },
-    group = vim.api.nvim_create_augroup("neotest-output-keymaps", { clear = true }),
-    callback = function(ev) vim.keymap.set("n", "q", "<Cmd>close<CR>", { desc = "Close panel", buffer = ev.buf }) end,
+    group = vim.api.nvim_create_augroup(
+      "neotest-output-keymaps",
+      { clear = true }
+    ),
+    callback = function(ev)
+      vim.keymap.set(
+        "n",
+        "q",
+        "<Cmd>close<CR>",
+        { desc = "Close panel", buffer = ev.buf }
+      )
+    end,
   })
 end)

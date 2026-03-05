@@ -1,10 +1,20 @@
 -- Mapping helpers ============================================================
-local nmap = function(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { desc = desc }) end
-local nmap_leader = function(suffix, rhs, desc) vim.keymap.set("n", "<Leader>" .. suffix, rhs, { desc = desc }) end
-local xmap_leader = function(suffix, rhs, desc) vim.keymap.set("x", "<Leader>" .. suffix, rhs, { desc = desc }) end
-local vmap_leader = function(suffix, rhs, desc) vim.keymap.set("v", "<Leader>" .. suffix, rhs, { desc = desc }) end
+local nmap = function(lhs, rhs, desc)
+  vim.keymap.set("n", lhs, rhs, { desc = desc })
+end
+local nmap_leader = function(suffix, rhs, desc)
+  vim.keymap.set("n", "<Leader>" .. suffix, rhs, { desc = desc })
+end
+local xmap_leader = function(suffix, rhs, desc)
+  vim.keymap.set("x", "<Leader>" .. suffix, rhs, { desc = desc })
+end
+local vmap_leader = function(suffix, rhs, desc)
+  vim.keymap.set("v", "<Leader>" .. suffix, rhs, { desc = desc })
+end
 local lsp_maps = {}
-local nmap_lsp = function(lhs, rhs, desc) table.insert(lsp_maps, { lhs = lhs, rhs = rhs, desc = desc }) end
+local nmap_lsp = function(lhs, rhs, desc)
+  table.insert(lsp_maps, { lhs = lhs, rhs = rhs, desc = desc })
+end
 
 -- General mappings ===========================================================
 nmap("x", '"_x') -- Prevent coping character to registry
@@ -17,15 +27,43 @@ nmap("]r", "<Cmd>lua Snacks.words.jump(1)<CR>", "next word reference")
 nmap("[r", "<Cmd>lua Snacks.words.jump(-1)<CR>", "previous word reference")
 
 -- Language mappings ===============================================================
-nmap_lsp("gW", "<Cmd>lua Snacks.picker.lsp_workspace_symbols()<CR>", "Workpace symbols")
+nmap_lsp(
+  "gW",
+  "<Cmd>lua Snacks.picker.lsp_workspace_symbols()<CR>",
+  "Workpace symbols"
+)
 nmap_lsp("gO", "<Cmd>lua Snacks.picker.lsp_symbols()<CR>", "Document symbols")
-nmap_lsp("grd", "<Cmd>lua Snacks.picker.lsp_definitions()<CR>", "Source definition")
-nmap_lsp("grD", "<Cmd>lua Snacks.picker.lsp_declarations()<CR>", "Source declaration")
+nmap_lsp(
+  "grd",
+  "<Cmd>lua Snacks.picker.lsp_definitions()<CR>",
+  "Source definition"
+)
+nmap_lsp(
+  "grD",
+  "<Cmd>lua Snacks.picker.lsp_declarations()<CR>",
+  "Source declaration"
+)
 nmap_lsp("grr", "<Cmd>lua Snacks.picker.lsp_references()<CR>", "References")
-nmap_lsp("gri", "<Cmd>lua Snacks.picker.lsp_implementations()<CR>", "Implementations")
-nmap_lsp("gry", "<Cmd>lua Snacks.picker.lsp_type_definitions()<CR>", "Type definition")
-nmap_lsp("grI", "<Cmd>lua Snacks.picker.lsp_incoming_calls()<CR>", "Calls incoming")
-nmap_lsp("grO", "<Cmd>lua Snacks.picker.lsp_outgoing_calls()<CR>", "Calls outgoing")
+nmap_lsp(
+  "gri",
+  "<Cmd>lua Snacks.picker.lsp_implementations()<CR>",
+  "Implementations"
+)
+nmap_lsp(
+  "gry",
+  "<Cmd>lua Snacks.picker.lsp_type_definitions()<CR>",
+  "Type definition"
+)
+nmap_lsp(
+  "grI",
+  "<Cmd>lua Snacks.picker.lsp_incoming_calls()<CR>",
+  "Calls incoming"
+)
+nmap_lsp(
+  "grO",
+  "<Cmd>lua Snacks.picker.lsp_outgoing_calls()<CR>",
+  "Calls outgoing"
+)
 nmap("grN", "<Cmd>lua Snacks.rename.rename_file()<CR>", "Rename file")
 nmap("grf", '<Cmd>lua require("conform").format()<CR>', "Format file")
 
@@ -57,18 +95,38 @@ _G.Config.leader_group_clues = {
 
 -- special leader direct keymaps
 nmap_leader("/", "<Cmd>lua Snacks.picker.grep()<CR>", "Grep search")
-nmap_leader(":", "<Cmd>lua Snacks.picker.command_history()<CR>", "Command history")
+nmap_leader(
+  ":",
+  "<Cmd>lua Snacks.picker.command_history()<CR>",
+  "Command history"
+)
 nmap_leader(",", "<Cmd>lua Snacks.picker.buffers()<CR>", "Open buffers")
 nmap_leader(".", "<Cmd>lua Snacks.picker.recent()<CR>", "Recent files")
 nmap_leader("<space>", "<Cmd>FFFSnacks<CR>", "Fuzzy find")
 
 -- a for 'Slop'
 nmap_leader("ac", '<Cmd>lua require("agentic").toggle()<CR>', "Chat")
-nmap_leader("an", '<Cmd>lua require("agentic").new_session()<CR>', "New session")
-nmap_leader("ar", '<Cmd>lua require("agentic").restore_session()<CR>', "Restore session")
-nmap_leader("as", '<Cmd>lua require("agentic").stop_generation()<CR>', "Stop generation")
+nmap_leader(
+  "an",
+  '<Cmd>lua require("agentic").new_session()<CR>',
+  "New session"
+)
+nmap_leader(
+  "ar",
+  '<Cmd>lua require("agentic").restore_session()<CR>',
+  "Restore session"
+)
+nmap_leader(
+  "as",
+  '<Cmd>lua require("agentic").stop_generation()<CR>',
+  "Stop generation"
+)
 nmap_leader("aa", '<Cmd>lua require("agentic").add_file()<CR>', "Add file")
-vmap_leader("aa", '<Cmd>lua require("agentic").add_selection()<CR>', "Add selection")
+vmap_leader(
+  "aa",
+  '<Cmd>lua require("agentic").add_selection()<CR>',
+  "Add selection"
+)
 
 -- b is for 'Buffer'
 nmap_leader("ba", "<Cmd>b#<CR>", "Alternate")
@@ -78,13 +136,18 @@ nmap_leader("bw", "<Cmd>lua MiniBufremove.wipeout()<CR>", "Wipeout")
 nmap_leader("bW", "<Cmd>lua MiniBufremove.wipeout(0, true)<CR>", "Wipeout!")
 
 -- d is for 'Debug'
-local breakpoint_condition = '<Cmd>lua require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))'
+local breakpoint_condition =
+  '<Cmd>lua require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))'
 
 nmap_leader("ds", '<Cmd>lua require("dap").continue()<CR>', "Start/Continue")
 nmap_leader("di", '<Cmd>lua require("dap").step_into()<CR>', "Step Into")
 nmap_leader("dv", '<Cmd>lua require("dap").step_over()<CR>', "Step Over")
 nmap_leader("do", '<Cmd>lua require("dap").step_out()<CR>', "Step Out")
-nmap_leader("da", '<Cmd>lua require("dap").toggle_breakpoint()<CR>', "Add breakpoint")
+nmap_leader(
+  "da",
+  '<Cmd>lua require("dap").toggle_breakpoint()<CR>',
+  "Add breakpoint"
+)
 nmap_leader("dc", breakpoint_condition, "Breakpoint condition")
 
 -- e is for 'Explore'
@@ -94,9 +157,21 @@ nmap_leader("ef", "<Cmd>SnacksExplorerFocus<CR>", "Focus")
 -- f is for 'Find'
 nmap_leader("ff", "<Cmd>lua Snacks.picker.files()<CR>", "Files")
 nmap_leader("fG", "<Cmd>lua Snacks.picker.grep_word()<CR>", "Grep current word")
-nmap_leader("fm", "<Cmd>lua Snacks.picker.git_diff()<CR>", "Modified hunks (all)")
-nmap_leader("fd", "<Cmd>lua Snacks.picker.diagnostics()<CR>", "Diagnostic workspace")
-nmap_leader("fD", "<Cmd>lua Snacks.picker.diagnostics_buffer()<CR>", "Diagnostic buffer")
+nmap_leader(
+  "fm",
+  "<Cmd>lua Snacks.picker.git_diff()<CR>",
+  "Modified hunks (all)"
+)
+nmap_leader(
+  "fd",
+  "<Cmd>lua Snacks.picker.diagnostics()<CR>",
+  "Diagnostic workspace"
+)
+nmap_leader(
+  "fD",
+  "<Cmd>lua Snacks.picker.diagnostics_buffer()<CR>",
+  "Diagnostic buffer"
+)
 nmap_leader("fc", "<Cmd>lua Snacks.picker.git_log()<CR>", "Commits (all)")
 nmap_leader("fC", "<Cmd>lua Snacks.picker.git_log_file()<CR>", "Commits (buf)")
 nmap_leader("fB", "<Cmd>lua Snacks.picker.git_log_line()<CR>", "Commits (line)")
@@ -129,17 +204,35 @@ nmap_leader("sr", '<Cmd>lua MiniSessions.select("read")<CR>', "Read")
 nmap_leader("sw", "<Cmd>lua MiniSessions.write()<CR>", "Write current")
 
 -- t is for 'Test'
-local test_output = '<Cmd>lua require("neotest").output.open({enter=true,auto_close=true})<CR>'
-local test_debug_nearest = '<Cmd>lua require("neotest").run.run({suite=false,strategy="dap"})<CR>'
+local test_output =
+  '<Cmd>lua require("neotest").output.open({enter=true,auto_close=true})<CR>'
+local test_debug_nearest =
+  '<Cmd>lua require("neotest").run.run({suite=false,strategy="dap"})<CR>'
 
 nmap_leader("ta", '<Cmd>lua require("neotest").run.attach()<CR>', "Attach")
-nmap_leader("tf", '<Cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', "Run file")
-nmap_leader("tA", '<Cmd>lua require("neotest").run.run(vim.uv.cwd())<CR>', "All files")
-nmap_leader("tS", '<Cmd>lua require("neotest").run.run({suite=true}) end<CR>', "Suite")
+nmap_leader(
+  "tf",
+  '<Cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>',
+  "Run file"
+)
+nmap_leader(
+  "tA",
+  '<Cmd>lua require("neotest").run.run(vim.uv.cwd())<CR>',
+  "All files"
+)
+nmap_leader(
+  "tS",
+  '<Cmd>lua require("neotest").run.run({suite=true}) end<CR>',
+  "Suite"
+)
 nmap_leader("tn", '<Cmd>lua require("neotest").run.run()<CR>', "Nearest")
 nmap_leader("tl", '<Cmd>lua require("neotest").run.run_last()<CR>', "Last test")
 nmap_leader("ts", '<Cmd>lua require("neotest").summary.toggle()<CR>', "Summary")
 nmap_leader("to", test_output, "Show output")
-nmap_leader("tO", '<Cmd>lua require("neotest").output_panel.toggle()<CR>', "Show output panel")
+nmap_leader(
+  "tO",
+  '<Cmd>lua require("neotest").output_panel.toggle()<CR>',
+  "Show output panel"
+)
 nmap_leader("tt", '<Cmd>lua require("neotest").run.stop()<CR>', "Terminate")
 nmap_leader("td", test_debug_nearest, "Debug nearest")

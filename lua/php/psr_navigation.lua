@@ -115,7 +115,9 @@ local function get_namespace_node_text()
   local root = get_treesitter_root()
 
   for node in root:iter_children() do
-    if node:type() == "namespace_definition" then return get_node_text(node:field("name")[1]) end
+    if node:type() == "namespace_definition" then
+      return get_node_text(node:field("name")[1])
+    end
   end
 
   return ""
@@ -125,7 +127,9 @@ local function get_class_node_text()
   local root = get_treesitter_root()
 
   for node in root:iter_children() do
-    if node:type() == "class_declaration" then return get_node_text(node:field("name")[1]) end
+    if node:type() == "class_declaration" then
+      return get_node_text(node:field("name")[1])
+    end
   end
 
   return ""
@@ -168,7 +172,9 @@ local function get_nearest_member_fqcn()
       for elements in node:iter_children() do
         if elements:type() == "const_element" then
           for child in elements:iter_children() do
-            if child:type() == "name" then return fqcn .. "::" .. get_node_text(child) end
+            if child:type() == "name" then
+              return fqcn .. "::" .. get_node_text(child)
+            end
           end
         end
       end
@@ -188,7 +194,10 @@ function M.fqcn_navigate()
 
     local roots = load_psr4_mappings()
     if vim.tbl_isempty(roots) then
-      vim.notify("No PSR-4 mappings found in composer.json or composer.lock", vim.log.levels.ERROR)
+      vim.notify(
+        "No PSR-4 mappings found in composer.json or composer.lock",
+        vim.log.levels.ERROR
+      )
       return
     end
 
@@ -203,7 +212,10 @@ function M.fqcn_navigate()
     end
 
     if not matched_root then
-      vim.notify("FQCN doesn’t match any PSR-4 namespace", vim.log.levels.WARN)
+      vim.notify(
+        "FQCN doesn’t match any PSR-4 namespace",
+        vim.log.levels.WARN
+      )
       return
     end
 
