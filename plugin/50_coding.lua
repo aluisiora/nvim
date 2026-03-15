@@ -52,6 +52,7 @@ later(function()
     go = { "gofumpt" },
     json = { "fixjson" },
     jsonc = { "fixjson" },
+    dart = { "dart_format" },
   }
   if _G.has_project_file("pint.json") then formatters.php = { "pint" } end
   conform.setup({ notify_on_error = true, formatters_by_ft = formatters })
