@@ -67,7 +67,6 @@ now_if_args(function()
     },
     picker = {
       ui_select = true,
-      layout = { cycle = false, preset = "ivy" },
       sources = {
         recent = {
           filter = { cwd = true },
