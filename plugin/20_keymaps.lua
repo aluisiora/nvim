@@ -102,7 +102,7 @@ nmap_leader(
 )
 nmap_leader(",", "<Cmd>lua Snacks.picker.buffers()<CR>", "Open buffers")
 nmap_leader(".", "<Cmd>lua Snacks.picker.recent()<CR>", "Recent files")
-nmap_leader("<space>", "<Cmd>FFFSnacks<CR>", "Fuzzy find")
+nmap_leader("<space>", "<Cmd>lua Snacks.picker.smart()<CR>", "Smart find")
 
 -- a for 'Slop'
 nmap_leader("ac", '<Cmd>lua require("agentic").toggle()<CR>', "Chat")

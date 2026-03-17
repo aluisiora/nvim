@@ -117,32 +117,10 @@ now_if_args(function()
     end
     Snacks.explorer.reveal()
   end, {})
-end)
-
-later(function()
-  -- fff
-  add({
-    source = "dmtrKovalenko/fff.nvim",
-    hooks = {
-      post_checkout = function()
-        require("fff.download").download_or_build_binary()
-      end,
-    },
-  })
-  vim.g.fff = {
-    prompt = "󰄾 ",
-    lazy_sync = true,
-    layout = { prompt_position = "top" },
-    preview = { enabled = false },
-    git = { status_text_color = true },
-  }
-
-  -- fff & snacks
-  add("madmaxieee/fff-snacks.nvim")
 
   -- disable completion on inputs
   vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "fff_input", "snacks_picker_input", "snacks_input" },
+    pattern = { "snacks_picker_input", "snacks_input" },
     group = vim.api.nvim_create_augroup(
       "disable-mini-completion",
       { clear = true }
