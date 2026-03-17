@@ -14,9 +14,9 @@ return {
         nixos = {
           expr = '(builtins.getFlake "' .. nixdir .. '").nixosConfigurations.' .. hostname .. '.options',
         },
-        -- home_manager = {
-        --   expr = '(builtins.getFlake "' .. nixdir .. '").homeConfigurations.' .. hostname .. '.options',
-        -- },
+        home_manager = {
+          expr = '(builtins.getFlake "' .. nixdir .. '").homeConfigurations.' .. hostname .. '.options',
+        },
       },
     },
   },
