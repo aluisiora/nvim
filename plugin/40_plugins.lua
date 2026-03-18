@@ -34,6 +34,7 @@ now_if_args(function()
     "vim",
     "vimdoc",
     "markdown",
+    "regex",
     "sql",
     "html",
     "css",
