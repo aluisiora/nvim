@@ -1,6 +1,5 @@
 return {
   ["FixCursorHold.nvim"] = "1900f89dc17c603eec29960f57c00bd9ae696495",
-  catppuccin = "384f304c8b04664c9e0091fbfb3923c5f97c1bcf",
   ["conform.nvim"] = "086a40dc7ed8242c03be9f47fbcee68699cc2395",
   ["fidget.nvim"] = "7fa433a83118a70fe24c1ce88d5f0bd3453c0970",
   ["flutter-tools.nvim"] = "677cc07c16e8b89999108d2ebeefcfc5f539b73c",
@@ -26,6 +25,7 @@ return {
   ["render-markdown.nvim"] = "e3c18ddd27a853f85a6f513a864cf4f2982b9f26",
   ["snacks.nvim"] = "a049339328e2599ad6e85a69fa034ac501e921b2",
   undotree = "6fa6b57cda8459e1e4b2ca34df702f55242f4e4d",
+  ["vague.nvim"] = "8c4643f8a5106dbc492918f86ff6b5c81111ce9a",
   ["vim-dadbod"] = "6d1d41da4873a445c5605f2005ad2c68c99d8770",
   ["vim-dadbod-completion"] = "a8dac0b3cf6132c80dc9b18bef36d4cf7a9e1fe6",
   ["vim-dadbod-ui"] = "07e92e22114cc5b1ba4938d99897d85b58e20475"

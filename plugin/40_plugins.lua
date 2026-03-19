@@ -3,9 +3,8 @@ local now_if_args = _G.Config.now_if_args
 
 --- theme
 now(function()
-  add({ source = "catppuccin/nvim", name = "catppuccin" })
-  require("catppuccin").setup({ flavour = "mocha" })
-  vim.cmd.colorscheme("catppuccin")
+  add("vague-theme/vague.nvim")
+  vim.cmd.colorscheme("vague")
 end)
 
 now(function()
