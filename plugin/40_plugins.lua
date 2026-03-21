@@ -33,6 +33,7 @@ now_if_args(function()
     "vim",
     "vimdoc",
     "markdown",
+    "markdown_inline",
     "regex",
     "sql",
     "html",
