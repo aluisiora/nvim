@@ -74,6 +74,28 @@ now_if_args(function()
   vim.lsp.config("*", { capabilities = capabilities })
 end)
 
+-- Navigate and manipulate file system
+now_if_args(function()
+  require("mini.files").setup()
+
+  -- Add common bookmarks for every explorer. Example usage inside explorer:
+  -- - `'c` to navigate into your config directory
+  -- - `g?` to see available bookmarks
+  local add_marks = function()
+    local env_file = function() return vim.fn.getcwd() .. ".env" end
+    MiniFiles.set_bookmark("w", vim.fn.getcwd, { desc = "Working directory" })
+    MiniFiles.set_bookmark("e", env_file, { desc = ".env file" })
+  end
+  vim.api.nvim_create_autocmd("User", {
+    desc = "Add bookmarks",
+    group = vim.api.nvim_create_augroup(
+      "mini-files-add-bookmarks",
+      { clear = true }
+    ),
+    callback = add_marks,
+  })
+end)
+
 -- Miscellaneous small but useful functions.
 later(function() require("mini.extra").setup() end)
 

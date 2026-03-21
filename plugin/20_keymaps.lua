@@ -151,8 +151,14 @@ nmap_leader(
 nmap_leader("dc", breakpoint_condition, "Breakpoint condition")
 
 -- e is for 'Explore'
-nmap_leader("ed", "<Cmd>lua Snacks.explorer.open()<CR>", "Directory")
-nmap_leader("ef", "<Cmd>SnacksExplorerFocus<CR>", "Focus")
+-- nmap_leader("ed", "<Cmd>lua Snacks.explorer.open()<CR>", "Directory")
+-- nmap_leader("ef", "<Cmd>SnacksExplorerFocus<CR>", "Focus")
+nmap_leader("ed", "<Cmd>lua MiniFiles.open()<CR>", "Directory")
+nmap_leader(
+  "ef",
+  "<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>",
+  "File directory"
+)
 
 -- f is for 'Find'
 nmap_leader("ff", "<Cmd>lua Snacks.picker.files()<CR>", "Files")

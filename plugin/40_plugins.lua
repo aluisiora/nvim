@@ -69,9 +69,6 @@ now_if_args(function()
     image = { enabled = true },
     input = { enabled = true },
     words = { enabled = true },
-    explorer = {
-      replace_netrw = false,
-    },
     picker = {
       ui_select = true,
       sources = {
