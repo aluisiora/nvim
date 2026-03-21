@@ -125,26 +125,6 @@ later(function() require("mini.comment").setup() end)
 -- Also provides summary info used in developer section of 'mini.statusline'.
 later(function() require("mini.diff").setup() end)
 
--- Navigation is done using column view (Miller columns) to display nested
--- directories, they are displayed in floating windows in top left corner.
-later(function()
-  require("mini.files").setup()
-  vim.api.nvim_create_autocmd("User", {
-    group = vim.api.nvim_create_augroup(
-      "mini-files-bookmarks",
-      { clear = true }
-    ),
-    pattern = "MiniFilesExplorerOpen",
-    desc = "Add bookmarks",
-    callback = function()
-      MiniFiles.set_bookmark("c", vim.fn.stdpath("config"), { desc = "Config" })
-      local minideps_plugins = vim.fn.stdpath("data") .. "/site/pack/deps/opt"
-      MiniFiles.set_bookmark("p", minideps_plugins, { desc = "Plugins" })
-      MiniFiles.set_bookmark("w", vim.fn.getcwd, { desc = "Working directory" })
-    end,
-  })
-end)
-
 -- Git integration for more straightforward Git actions based on Neovim's state.
 later(function() require("mini.git").setup() end)
 
