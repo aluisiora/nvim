@@ -76,7 +76,7 @@ later(function()
     typescript = { "eslint" },
     javascript = { "eslint" },
     lua = { "luacheck" },
-    nix = { "nix" }
+    nix = { "nix" },
   }
   local trylint = function() lint.try_lint() end
   vim.api.nvim_create_user_command("Lint", trylint, {})
