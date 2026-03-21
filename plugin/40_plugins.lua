@@ -3,8 +3,9 @@ local now_if_args = _G.Config.now_if_args
 
 --- theme
 now(function()
-  add("vague-theme/vague.nvim")
-  vim.cmd.colorscheme("vague")
+  add("loctvl842/monokai-pro.nvim")
+  require("monokai-pro").setup()
+  vim.cmd.colorscheme("monokai-pro")
 end)
 
 now(function()
