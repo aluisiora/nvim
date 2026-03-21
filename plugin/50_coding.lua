@@ -207,6 +207,7 @@ later(function()
   add("olimorris/neotest-phpunit")
   add("nvim-neotest/neotest-jest")
   add("thenbe/neotest-playwright")
+  add("sidlatau/neotest-dart")
 
   -- coverage
   require("coverage").setup({
@@ -241,6 +242,17 @@ later(function()
     else
       table.insert(adapters, require("neotest-phpunit"))
     end
+  end
+
+  -- test.dart test.flutter
+  if _G.has_executable("flutter") then
+    table.insert(
+      adapters,
+      require("neotest-dart")({
+        command = "flutter",
+        use_lsp = true,
+      })
+    )
   end
 
   if _G.has_executable("node") then
