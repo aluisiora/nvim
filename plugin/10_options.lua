@@ -37,7 +37,7 @@ vim.o.sidescrolloff  = 6          -- N columns to keep from the sides on the cur
 
 vim.o.cursorlineopt  = 'screenline,number' -- Show cursor line per screen line
 
--- Special UI symbols. More is set via 'mini.basics' later.
+-- Special UI symbols.
 vim.o.fillchars = 'eob: ,fold:╌'
 vim.o.listchars = 'extends:…,nbsp:␣,precedes:…,tab:> '
 

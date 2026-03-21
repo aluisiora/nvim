@@ -6,6 +6,12 @@ now(function()
   add("loctvl842/monokai-pro.nvim")
   require("monokai-pro").setup()
   vim.cmd.colorscheme("monokai-pro")
+
+  -- Fix contrast for snacks explorer ignored/hidden files
+  vim.api.nvim_set_hl(0, "Directory", { bg = "none" })
+  vim.api.nvim_set_hl(0, "SnacksPickerPathIgnored", { link = "Comment" })
+  vim.api.nvim_set_hl(0, "SnacksPickerPathHidden", { link = "Comment" })
+  vim.api.nvim_set_hl(0, "SnacksPickerGitIgnored", { link = "Comment" })
 end)
 
 now(function()
@@ -19,7 +25,6 @@ now_if_args(function()
     source = "nvim-treesitter/nvim-treesitter",
     hooks = { post_checkout = function() vim.cmd("TSUpdate") end },
   })
-  add("nvim-treesitter/nvim-treesitter-textobjects")
 
   -- blade
   vim.filetype.add({
