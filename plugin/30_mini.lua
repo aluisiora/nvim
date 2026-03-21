@@ -30,11 +30,22 @@ now(function() require("mini.statusline").setup() end)
 now_if_args(function()
   -- Customize post-processing of LSP responses for a better user experience.
   -- Don't show 'Text' suggestions (usually noisy) and show snippets last.
-  local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
+  local process_items_opts = {
+    kind_priority = {
+      Variable = 1,
+      Field = 2,
+      Property = 2,
+      Method = 3,
+      Function = 3,
+      Snippet = 99,
+      Text = -1,
+    },
+  }
   local process_items = function(items, base)
     return MiniCompletion.default_process_items(items, base, process_items_opts)
   end
   require("mini.completion").setup({
+    fallback_action = "",
     lsp_completion = {
       -- Without this config autocompletion is set up through `:h 'completefunc'`.
       -- Although not needed, setting up through `:h 'omnifunc'` is cleaner
