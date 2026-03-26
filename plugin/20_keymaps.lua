@@ -8,9 +8,6 @@ end
 local xmap_leader = function(suffix, rhs, desc)
   vim.keymap.set("x", "<Leader>" .. suffix, rhs, { desc = desc })
 end
-local vmap_leader = function(suffix, rhs, desc)
-  vim.keymap.set("v", "<Leader>" .. suffix, rhs, { desc = desc })
-end
 local lsp_maps = {}
 local nmap_lsp = function(lhs, rhs, desc)
   table.insert(lsp_maps, { lhs = lhs, rhs = rhs, desc = desc })
@@ -126,14 +123,8 @@ nmap_leader(
 nmap_leader("dc", breakpoint_condition, "Breakpoint condition")
 
 -- e is for 'Explore'
--- nmap_leader("ed", "<Cmd>lua Snacks.explorer.open()<CR>", "Directory")
--- nmap_leader("ef", "<Cmd>SnacksExplorerFocus<CR>", "Focus")
-nmap_leader("ed", "<Cmd>lua MiniFiles.open()<CR>", "Directory")
-nmap_leader(
-  "ef",
-  "<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>",
-  "File directory"
-)
+nmap_leader("ed", "<Cmd>lua Snacks.explorer.open()<CR>", "Directory")
+nmap_leader("ef", "<Cmd>SnacksExplorerFocus<CR>", "Focus")
 
 -- f is for 'Find'
 nmap_leader("ff", "<Cmd>lua Snacks.picker.files()<CR>", "Files")

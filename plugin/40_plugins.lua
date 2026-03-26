@@ -4,14 +4,17 @@ local now_if_args = _G.Config.now_if_args
 --- theme
 now(function()
   add("loctvl842/monokai-pro.nvim")
-  require("monokai-pro").setup()
+  require("monokai-pro").setup({
+    override = function()
+      return {
+        Directory = { bg = "none" },
+        SnacksPickerPathIgnored = { link = "Comment" },
+        SnacksPickerPathHidden = { link = "Comment" },
+        SnacksPickerGitIgnored = { link = "Comment" },
+      }
+    end,
+  })
   vim.cmd.colorscheme("monokai-pro")
-
-  -- Fix contrast for snacks explorer ignored/hidden files
-  vim.api.nvim_set_hl(0, "Directory", { bg = "none" })
-  vim.api.nvim_set_hl(0, "SnacksPickerPathIgnored", { link = "Comment" })
-  vim.api.nvim_set_hl(0, "SnacksPickerPathHidden", { link = "Comment" })
-  vim.api.nvim_set_hl(0, "SnacksPickerGitIgnored", { link = "Comment" })
 end)
 
 now(function()
@@ -76,6 +79,7 @@ now_if_args(function()
           filter = { cwd = true },
         },
         explorer = {
+          border = false,
           ignored = true,
           hidden = true,
           exclude = { ".git" },
