@@ -82,7 +82,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- Leader mappings ============================================================
 _G.Config.leader_group_clues = {
-  { mode = "n", keys = "<Leader>a", desc = "+AI" },
   { mode = "n", keys = "<Leader>b", desc = "+Buffer" },
   { mode = "n", keys = "<Leader>d", desc = "+Debug" },
   { mode = "n", keys = "<Leader>e", desc = "+Explore" },
@@ -103,30 +102,6 @@ nmap_leader(
 nmap_leader(",", "<Cmd>lua Snacks.picker.buffers()<CR>", "Open buffers")
 nmap_leader(".", "<Cmd>lua Snacks.picker.recent()<CR>", "Recent files")
 nmap_leader("<space>", "<Cmd>lua Snacks.picker.smart()<CR>", "Smart find")
-
--- a for 'Slop'
-nmap_leader("ac", '<Cmd>lua require("agentic").toggle()<CR>', "Chat")
-nmap_leader(
-  "an",
-  '<Cmd>lua require("agentic").new_session()<CR>',
-  "New session"
-)
-nmap_leader(
-  "ar",
-  '<Cmd>lua require("agentic").restore_session()<CR>',
-  "Restore session"
-)
-nmap_leader(
-  "as",
-  '<Cmd>lua require("agentic").stop_generation()<CR>',
-  "Stop generation"
-)
-nmap_leader("aa", '<Cmd>lua require("agentic").add_file()<CR>', "Add file")
-vmap_leader(
-  "aa",
-  '<Cmd>lua require("agentic").add_selection()<CR>',
-  "Add selection"
-)
 
 -- b is for 'Buffer'
 nmap_leader("ba", "<Cmd>b#<CR>", "Alternate")
