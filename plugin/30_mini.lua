@@ -33,10 +33,10 @@ now_if_args(function()
   local process_items_opts = {
     kind_priority = {
       Variable = 1,
+      Field = 2,
       Property = 2,
-      Field = 3,
-      Method = 4,
-      Function = 5,
+      Method = 3,
+      Function = 3,
       Snippet = 99,
       Text = -1,
     },

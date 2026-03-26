@@ -112,7 +112,7 @@ nmap_leader("bW", "<Cmd>lua MiniBufremove.wipeout(0, true)<CR>", "Wipeout!")
 
 -- d is for 'Debug'
 local breakpoint_condition =
-  '<Cmd>lua require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>'
+  '<Cmd>lua require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))'
 
 nmap_leader("ds", '<Cmd>lua require("dap").continue()<CR>', "Start/Continue")
 nmap_leader("di", '<Cmd>lua require("dap").step_into()<CR>', "Step Into")
