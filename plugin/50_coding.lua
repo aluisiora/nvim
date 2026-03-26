@@ -46,6 +46,9 @@ later(function()
 
     require("flutter-tools").setup({
       flutter_lookup_cmd = "mise where flutter",
+      widget_guides = {
+        enabled = true,
+      },
       lsp = {
         capabilities = capabilities,
         settings = {
