@@ -76,7 +76,10 @@ now_if_args(function()
   vim.api.nvim_create_autocmd("FileType", {
     pattern = filetypes,
     group = vim.api.nvim_create_augroup("enable-treesitter", { clear = true }),
-    callback = function(ev) vim.treesitter.start(ev.buf) end,
+    callback = function(ev)
+      vim.treesitter.start(ev.buf)
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end,
   })
 end)
 
