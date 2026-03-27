@@ -36,31 +36,48 @@ now_if_args(function()
     },
   })
 
-  local ts = require("nvim-treesitter")
-  ts.install({
-    "lua",
-    "vim",
-    "vimdoc",
-    "markdown",
-    "markdown_inline",
-    "regex",
-    "sql",
-    "html",
-    "css",
-    "javascript",
-    "php",
+  local languages = {
+    "bash",
     "blade",
+    "comment",
+    "css",
     "diff",
-    "json",
     "go",
-    "gowork",
     "gomod",
     "gosum",
     "gotmpl",
-    "comment",
+    "gowork",
+    "html",
     "hurl",
-  })
+    "ini",
+    "javascript",
+    "json",
+    "lua",
+    "markdown",
+    "markdown_inline",
+    "nix",
+    "php",
+    "regex",
+    "sql",
+    "tmux",
+    "typescript",
+    "vim",
+    "vimdoc",
+    "zsh",
+  }
+  require("nvim-treesitter").install(languages)
   vim.treesitter.language.register("sql", "mysql")
+  local filetypes = {}
+  for _, lang in ipairs(languages) do
+    for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+      table.insert(filetypes, ft)
+    end
+  end
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = filetypes,
+    group = vim.api.nvim_create_augroup("enable-treesitter", { clear = true }),
+    callback = function(ev) vim.treesitter.start(ev.buf) end,
+  })
 end)
 
 -- file picking and exploring
