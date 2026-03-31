@@ -2,6 +2,9 @@
 local nmap = function(lhs, rhs, desc)
   vim.keymap.set("n", lhs, rhs, { desc = desc })
 end
+local nvmap = function(lhs, rhs, desc)
+  vim.keymap.set({ "n", "v" }, lhs, rhs, { desc = desc })
+end
 local nmap_leader = function(suffix, rhs, desc)
   vim.keymap.set("n", "<Leader>" .. suffix, rhs, { desc = desc })
 end
@@ -16,12 +19,12 @@ end
 -- General mappings ===========================================================
 nmap("x", '"_x') -- Prevent coping character to registry
 nmap("<Esc>", "<Cmd>nohlsearch<CR>") -- Clear highlighted search
-nmap("<C-h>", "<C-w><C-h>", "Focus left")
-nmap("<C-l>", "<C-w><C-l>", "Focus right")
-nmap("<C-j>", "<C-w><C-j>", "Focus down")
-nmap("<C-k>", "<C-w><C-k>", "Focus up")
 nmap("]r", "<Cmd>lua Snacks.words.jump(1)<CR>", "next word reference")
 nmap("[r", "<Cmd>lua Snacks.words.jump(-1)<CR>", "previous word reference")
+nvmap("<C-h>", "<C-w><C-h>", "Focus left")
+nvmap("<C-l>", "<C-w><C-l>", "Focus right")
+nvmap("<C-j>", "<C-w><C-j>", "Focus down")
+nvmap("<C-k>", "<C-w><C-k>", "Focus up")
 
 -- Language mappings ===============================================================
 nmap_lsp(
