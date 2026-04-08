@@ -1,5 +1,4 @@
-local now, later = MiniDeps.now, MiniDeps.later
-local now_if_args = _G.Config.now_if_args
+local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 -- Icon provider. Usually no need to use manually. It is used by plugins like
 -- 'mini.pick', 'mini.files', 'mini.statusline', and others.
@@ -74,26 +73,14 @@ now_if_args(function()
   vim.lsp.config("*", { capabilities = capabilities })
 end)
 
--- Navigate and manipulate file system
+-- Miscellaneous small but useful functions.
 now_if_args(function()
-  require("mini.files").setup()
-
-  -- Add common bookmarks for every explorer. Example usage inside explorer:
-  -- - `'c` to navigate into your config directory
-  -- - `g?` to see available bookmarks
-  local add_marks = function()
-    local env_file = function() return vim.fn.getcwd() .. ".env" end
-    MiniFiles.set_bookmark("w", vim.fn.getcwd, { desc = "Working directory" })
-    MiniFiles.set_bookmark("e", env_file, { desc = ".env file" })
-  end
-  vim.api.nvim_create_autocmd("User", {
-    desc = "Add bookmarks",
-    group = vim.api.nvim_create_augroup(
-      "mini-files-add-bookmarks",
-      { clear = true }
-    ),
-    callback = add_marks,
-  })
+  require("mini.misc").setup()
+  -- Restore latest cursor position on file open
+  MiniMisc.setup_restore_cursor()
+  -- Synchronize terminal emulator background with Neovim's background to remove
+  -- possibly different color padding around Neovim instance
+  MiniMisc.setup_termbg_sync()
 end)
 
 -- Miscellaneous small but useful functions.
@@ -103,7 +90,7 @@ later(function() require("mini.extra").setup() end)
 -- Contains not only `a` and `i` type of textobjects, but also their "next" and
 -- "last" variants that will explicitly search for textobjects after and before
 -- cursor.
-later(function() require("mini.ai").setup({ search_method = "cover" }) end)
+later(function() require("mini.ai").setup() end)
 
 -- Align text interactively.
 later(function() require("mini.align").setup() end)
@@ -236,28 +223,29 @@ later(function()
   })
 
   -- Stop session immediately after jumping to final tabstop
-  local fin_stop = function(args)
-    if args.data.tabstop_to == "0" then MiniSnippets.session.stop() end
-  end
-  local au_opts = { pattern = "MiniSnippetsSessionJump", callback = fin_stop }
-  vim.api.nvim_create_autocmd("User", au_opts)
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniSnippetsSessionJump",
+    callback = function(args)
+      if args.data.tabstop_to == "0" then MiniSnippets.session.stop() end
+    end,
+  })
 
   -- Stop all sessions on Normal mode exit
   local make_stop = function()
-    local au_opts = { pattern = "*:n", once = true }
-    au_opts.callback = function()
-      while MiniSnippets.session.get() do
-        MiniSnippets.session.stop()
-      end
-    end
-    vim.api.nvim_create_autocmd("ModeChanged", au_opts)
+    vim.api.nvim_create_autocmd("ModeChanged", {
+      pattern = "*:n",
+      once = true,
+      callback = function()
+        while MiniSnippets.session.get() do
+          MiniSnippets.session.stop()
+        end
+      end,
+    })
   end
-  local opts = { pattern = "MiniSnippetsSessionStart", callback = make_stop }
-  vim.api.nvim_create_autocmd("User", opts)
-
-  -- By default snippets available at cursor are not shown as candidates in
-  -- 'mini.completion' menu. This requires a dedicated in-process LSP server.
-  -- MiniSnippets.start_lsp_server()
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniSnippetsSessionStart",
+    callback = make_stop,
+  })
 end)
 
 -- Split and join arguments (regions inside brackets between allowed separators).

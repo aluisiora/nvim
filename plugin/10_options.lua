@@ -22,7 +22,9 @@ vim.o.cursorline     = true       -- Enable current line highlighting
 vim.o.linebreak      = true       -- Wrap lines at 'breakat' (if 'wrap' is set)
 vim.o.list           = false      -- Show helpful text indicators, hidden by default
 vim.o.number         = true       -- Show line numbers
+vim.o.pumborder      = 'single'   -- Use border in popup menu
 vim.o.pumheight      = 10         -- Make popup menu smaller
+vim.o.pummaxwidth    = 100        -- Make popup menu not too wide
 vim.o.ruler          = false      -- Don't show cursor coordinates
 vim.o.shortmess      = 'CFOSWaco' -- Disable some built-in completion messages
 vim.o.showmode       = false      -- Don't show mode in command line
@@ -63,7 +65,7 @@ vim.o.virtualedit   = 'block' -- Allow going past end of line in blockwise mode
 vim.o.encoding      = "utf-8"
 vim.o.fileencoding  = "utf-8"
 
-vim.o.iskeyword = '@,48-57,_,192-255,-' -- Treat dash as `word` textobject part
+-- vim.o.iskeyword = '@,48-57,_,192-255,-' -- Treat dash as `word` textobject part
 
 -- Pattern for a start of numbered list (used in `gw`). This reads as
 -- "Start of list item is: at least one special character (digit, -, +, *)
@@ -73,6 +75,7 @@ vim.o.formatlistpat = [[^\s*[0-9\-\+\*]\+[\.\)]*\s\+]]
 -- Built-in completion
 vim.o.complete    = '.,w,b,kspell'                  -- Use less sources
 vim.o.completeopt = 'menuone,noselect,fuzzy'        -- Use custom behavior
+vim.o.completetimeout = 100                         -- Limit sources delay
 
 -- Swap
 vim.o.swapfile = false
@@ -97,7 +100,16 @@ vim.api.nvim_create_autocmd("FileType", {
 -- See `:h vim.diagnostic` and `:h vim.diagnostic.config()`.
 local diagnostic_opts = {
   -- Show signs on top of any other sign, but only for warnings and errors
-  signs = { priority = 9999, severity = { min = 'WARN', max = 'ERROR' } },
+  signs = {
+    priority = 9999,
+    severity = { min = 'WARN', max = 'ERROR' },
+    text = {
+      [vim.diagnostic.severity.ERROR] = "󰅚 ",
+      [vim.diagnostic.severity.WARN] = "󰀪 ",
+      [vim.diagnostic.severity.INFO] = "󰋽 ",
+      [vim.diagnostic.severity.HINT] = "󰌶 ",
+    },
+  },
 
   -- Show all diagnostics as underline (for their messages type `<Leader>ld`)
   underline = { severity = { min = 'HINT', max = 'ERROR' } },
@@ -114,5 +126,5 @@ local diagnostic_opts = {
 }
 
 -- Use `later()` to avoid sourcing `vim.diagnostic` on startup
-MiniDeps.later(function() vim.diagnostic.config(diagnostic_opts) end)
+Config.later(function() vim.diagnostic.config(diagnostic_opts) end)
 -- stylua: ignore end

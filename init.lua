@@ -1,24 +1,33 @@
-local mini_path = vim.fn.stdpath("data") .. "/site/pack/deps/start/mini.nvim"
-if not vim.loop.fs_stat(mini_path) then
-  vim.cmd('echo "Installing `mini.nvim`" | redraw')
-  local origin = "https://github.com/nvim-mini/mini.nvim"
-  local clone_cmd = { "git", "clone", "--filter=blob:none", origin, mini_path }
-  vim.fn.system(clone_cmd)
-  vim.cmd("packadd mini.nvim | helptags ALL")
-  vim.cmd('echo "Installed `mini.nvim`" | redraw')
-end
-require("mini.deps").setup()
-
 _G.Config = {}
 
--- Some plugins and 'mini.nvim' modules only need setup during startup if Neovim
--- is started like `nvim -- path/to/file`, otherwise delaying setup is fine
-_G.Config.now_if_args = vim.fn.argc(-1) > 0 and MiniDeps.now or MiniDeps.later
+vim.pack.add({ "https://github.com/nvim-mini/mini.nvim" })
+
+local misc = require("mini.misc")
+Config.now = function(f) misc.safely("now", f) end
+Config.later = function(f) misc.safely("later", f) end
+Config.now_if_args = vim.fn.argc(-1) > 0 and Config.now or Config.later
+
+Config.on_packchanged = function(plugin_name, kinds, callback, desc)
+  local f = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+    if not (name == plugin_name and vim.tbl_contains(kinds, kind)) then
+      return
+    end
+    if not ev.data.active then vim.cmd.packadd(plugin_name) end
+    callback(ev.data)
+  end
+  vim.api.nvim_create_autocmd("PackChanged", {
+    pattern = "*",
+    group = vim.api.nvim_create_augroup("custom-pack-changed", {}),
+    desc = desc,
+    callback = f,
+  })
+end
 
 -- Some functionality is only useful for certain projects and when certain binaries
 -- are available on the system
-_G.has_executable = function(exec) return vim.fn.executable(exec) == 1 end
-_G.has_project_file = function(filename)
+Config.has_executable = function(exec) return vim.fn.executable(exec) == 1 end
+Config.has_project_file = function(filename)
   local path = vim.fn.getcwd() .. "/" .. filename
   local stat = vim.loop.fs_stat(path)
   return stat ~= nil

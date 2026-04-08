@@ -1,17 +1,16 @@
-local add, later = MiniDeps.add, MiniDeps.later
-local now_if_args = _G.Config.now_if_args
+local now_if_args, later = Config.now_if_args, Config.later
 
 -- Language servers ===========================================================
 
 -- Mason
 now_if_args(function()
-  add("mason-org/mason.nvim")
+  vim.pack.add({ "https://github.com/mason-org/mason.nvim" })
   require("mason").setup({})
 end)
 
 -- LSPs
 later(function()
-  add("j-hui/fidget.nvim")
+  vim.pack.add({ "https://github.com/j-hui/fidget.nvim" })
   require("fidget").setup()
   -- stylua: ignore
   vim.lsp.enable({
@@ -30,8 +29,11 @@ end)
 
 -- Flutter
 later(function()
-  add("nvim-flutter/flutter-tools.nvim")
-  if _G.has_executable("flutter") then
+  vim.pack.add({
+    "https://github.com/nvim-lua/plenary.nvim",
+    "https://github.com/nvim-flutter/flutter-tools.nvim",
+  })
+  if Config.has_executable("flutter") then
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     local mini_caps = MiniCompletion.get_lsp_capabilities()
     capabilities = vim.tbl_deep_extend("force", capabilities, mini_caps)
@@ -62,7 +64,7 @@ end)
 
 -- Formatting =================================================================
 later(function()
-  add("stevearc/conform.nvim")
+  vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
   local conform = require("conform")
   local formatters = {
     lua = { "stylua" },
@@ -76,7 +78,7 @@ later(function()
     jsonc = { "fixjson" },
     dart = { "dart_format" },
   }
-  if _G.has_project_file("pint.json") then formatters.php = { "pint" } end
+  if Config.has_project_file("pint.json") then formatters.php = { "pint" } end
   conform.setup({ notify_on_error = true, formatters_by_ft = formatters })
   local options = { async = true, lsp_format = "fallback" }
   vim.api.nvim_create_user_command(
@@ -88,7 +90,7 @@ end)
 
 -- Linting ====================================================================
 later(function()
-  add("mfussenegger/nvim-lint")
+  vim.pack.add({ "https://github.com/mfussenegger/nvim-lint" })
   local lint = require("lint")
   lint.linters_by_ft = {
     php = { "phpstan" },
@@ -114,15 +116,19 @@ end)
 
 -- Although 'mini.snippets' provides functionality to manage snippet files, it
 -- deliberately doesn't come with those.
-later(function() add("rafamadriz/friendly-snippets") end)
+later(
+  function() vim.pack.add({ "https://github.com/rafamadriz/friendly-snippets" }) end
+)
 
 -- Database integration =======================================================
 
 later(function()
   vim.g.db_ui_use_nerd_fonts = 1
-  add("tpope/vim-dadbod")
-  add("kristijanhusak/vim-dadbod-ui")
-  add("kristijanhusak/vim-dadbod-completion")
+  vim.pack.add({
+    "https://github.com/tpope/vim-dadbod",
+    "https://github.com/kristijanhusak/vim-dadbod-ui",
+    "https://github.com/kristijanhusak/vim-dadbod-completion",
+  })
   vim.api.nvim_create_autocmd("FileType", {
     pattern = { "sql", "mysql", "plsql" },
     group = vim.api.nvim_create_augroup("dadbod-completion", { clear = true }),
@@ -136,21 +142,21 @@ end)
 
 -- API testing with Hurl ======================================================
 later(function()
-  add({
-    source = "jellydn/hurl.nvim",
-    depends = {
-      "MeanderingProgrammer/render-markdown.nvim",
-    },
+  vim.pack.add({
+    "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+    "https://github.com/jellydn/hurl.nvim",
   })
   require("hurl").setup()
 end)
 
 -- Debugging ==================================================================
 later(function()
-  add("nvim-neotest/nvim-nio")
-  add("mfussenegger/nvim-dap")
-  add("leoluz/nvim-dap-go")
-  add("rcarriga/nvim-dap-ui")
+  vim.pack.add({
+    "https://github.com/nvim-neotest/nvim-nio",
+    "https://github.com/mfussenegger/nvim-dap",
+    "https://github.com/rcarriga/nvim-dap-ui",
+    "https://github.com/leoluz/nvim-dap-go",
+  })
 
   local dap = require("dap")
 
@@ -169,7 +175,7 @@ later(function()
   }
 
   -- debug.golang
-  if _G.has_project_file("go.mod") then require("dap-go").setup() end
+  if Config.has_project_file("go.mod") then require("dap-go").setup() end
 
   -- dap-ui
   local dapui = require("dapui")
@@ -202,15 +208,18 @@ end)
 
 -- Testing ====================================================================
 later(function()
-  add("andythigpen/nvim-coverage")
-  add("antoinemadec/FixCursorHold.nvim")
-  add("nvim-neotest/nvim-nio")
-  add("nvim-neotest/neotest")
-  add("fredrikaverpil/neotest-golang")
-  add("olimorris/neotest-phpunit")
-  add("nvim-neotest/neotest-jest")
-  add("thenbe/neotest-playwright")
-  add("sidlatau/neotest-dart")
+  vim.pack.add({
+    "https://github.com/nvim-lua/plenary.nvim",
+    "https://github.com/andythigpen/nvim-coverage",
+    "https://github.com/antoinemadec/FixCursorHold.nvim",
+    "https://github.com/nvim-neotest/nvim-nio",
+    "https://github.com/nvim-neotest/neotest",
+    "https://github.com/fredrikaverpil/neotest-golang",
+    "https://github.com/olimorris/neotest-phpunit",
+    "https://github.com/nvim-neotest/neotest-jest",
+    "https://github.com/thenbe/neotest-playwright",
+    "https://github.com/sidlatau/neotest-dart",
+  })
 
   -- coverage
   require("coverage").setup({
@@ -221,7 +230,7 @@ later(function()
   local adapters = {}
 
   -- test.golang
-  if _G.has_project_file("go.mod") then
+  if Config.has_project_file("go.mod") then
     table.insert(
       adapters,
       require("neotest-golang")({
@@ -238,8 +247,8 @@ later(function()
   end
 
   -- test.phpunit
-  if _G.has_executable("php") then
-    if _G.has_project_file("codeception.yml") then
+  if Config.has_executable("php") then
+    if Config.has_project_file("codeception.yml") then
       table.insert(adapters, require("neotest-codeception"))
       table.insert(adapters, require("neotest-codeception-gherkin"))
     else
@@ -248,7 +257,7 @@ later(function()
   end
 
   -- test.dart test.flutter
-  if _G.has_executable("flutter") then
+  if Config.has_executable("flutter") then
     table.insert(
       adapters,
       require("neotest-dart")({
@@ -258,7 +267,7 @@ later(function()
     )
   end
 
-  if _G.has_executable("node") then
+  if Config.has_executable("node") then
     -- test.jest
     table.insert(
       adapters,

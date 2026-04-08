@@ -1,9 +1,8 @@
-local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
-local now_if_args = _G.Config.now_if_args
+local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 --- theme
 now(function()
-  add("loctvl842/monokai-pro.nvim")
+  vim.pack.add({ "https://github.com/loctvl842/monokai-pro.nvim" })
   require("monokai-pro").setup({
     override = function()
       return {
@@ -17,16 +16,14 @@ now(function()
   vim.cmd.colorscheme("monokai-pro")
 end)
 
-now(function()
-  add("nvim-lua/plenary.nvim")
-  add("MunifTanjim/nui.nvim")
-end)
-
 -- treesitter
 now_if_args(function()
-  add({
-    source = "nvim-treesitter/nvim-treesitter",
-    hooks = { post_checkout = function() vim.cmd("TSUpdate") end },
+  local ts_update = function() vim.cmd("TSUpdate") end
+  Config.on_packchanged("nvim-treesitter", { "update" }, ts_update, ":TSUpdate")
+
+  vim.pack.add({
+    "https://github.com/nvim-treesitter/nvim-treesitter",
+    "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
   })
 
   -- blade
@@ -53,21 +50,34 @@ now_if_args(function()
     "ini",
     "javascript",
     "json",
+    "latex",
     "lua",
     "markdown_inline",
     "markdown",
     "nix",
     "php",
     "regex",
+    "scss",
     "sql",
     "tmux",
+    "tsx",
     "typescript",
     "vim",
     "vimdoc",
+    "vue",
+    "yaml",
     "zsh",
   }
-  require("nvim-treesitter").install(languages)
   vim.treesitter.language.register("sql", "mysql")
+
+  -- install parsers
+  local isnt_installed = function(lang)
+    return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
+  end
+  local to_install = vim.tbl_filter(isnt_installed, languages)
+  if #to_install > 0 then require("nvim-treesitter").install(to_install) end
+
+  -- enable highlighting
   local filetypes = {}
   for _, lang in ipairs(languages) do
     for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
@@ -89,12 +99,17 @@ end)
 -- file picking and exploring
 now_if_args(function()
   -- snacks
-  add("folke/snacks.nvim")
+  vim.pack.add({ "https://github.com/folke/snacks.nvim" })
   local snacks = require("snacks")
   snacks.setup({
     image = { enabled = true },
     input = { enabled = true },
     words = { enabled = true },
+    explorer = {
+      enabled = true,
+      replace_netrw = false,
+      trash = false,
+    },
     picker = {
       ui_select = true,
       sources = {
@@ -159,11 +174,10 @@ now_if_args(function()
   })
 end)
 
--- undotree
-later(function() add("mbbill/undotree") end)
-
 -- markdown
 later(function()
-  add("MeanderingProgrammer/render-markdown.nvim")
+  vim.pack.add({
+    "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+  })
   require("render-markdown").setup()
 end)

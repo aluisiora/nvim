@@ -81,14 +81,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- Leader mappings ============================================================
-_G.Config.leader_group_clues = {
+Config.leader_group_clues = {
   { mode = "n", keys = "<Leader>b", desc = "+Buffer" },
   { mode = "n", keys = "<Leader>d", desc = "+Debug" },
   { mode = "n", keys = "<Leader>e", desc = "+Explore" },
   { mode = "n", keys = "<Leader>f", desc = "+Find" },
   { mode = "n", keys = "<Leader>g", desc = "+Git" },
   { mode = "x", keys = "<Leader>g", desc = "+Git" },
-  { mode = "n", keys = "<Leader>s", desc = "+Session" },
+  { mode = "n", keys = "<Leader>o", desc = "+Other" },
   { mode = "n", keys = "<Leader>t", desc = "+Test" },
 }
 
@@ -170,13 +170,14 @@ nmap_leader("gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "Show at cursor")
 
 xmap_leader("gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "Show at selection")
 
--- s is for 'Session'
-local session_new = 'MiniSessions.write(vim.fn.input("Session name: "))'
-
-nmap_leader("sd", '<Cmd>lua MiniSessions.select("delete")<CR>', "Delete")
-nmap_leader("sn", "<Cmd>lua " .. session_new .. "<CR>", "New")
-nmap_leader("sr", '<Cmd>lua MiniSessions.select("read")<CR>', "Read")
-nmap_leader("sw", "<Cmd>lua MiniSessions.write()<CR>", "Write current")
+-- o is for 'Other'
+nmap_leader(
+  "or",
+  "<Cmd>lua MiniMisc.resize_window()<CR>",
+  "Resize to default width"
+)
+nmap_leader("ot", "<Cmd>lua MiniTrailspace.trim()<CR>", "Trim trailspace")
+nmap_leader("oz", "<Cmd>lua MiniMisc.zoom()<CR>", "Zoom toggle")
 
 -- t is for 'Test'
 local test_output =
