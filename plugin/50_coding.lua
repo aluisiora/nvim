@@ -34,28 +34,14 @@ later(function()
     "https://github.com/nvim-flutter/flutter-tools.nvim",
   })
   if Config.has_executable("flutter") then
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    local mini_caps = MiniCompletion.get_lsp_capabilities()
-    capabilities = vim.tbl_deep_extend("force", capabilities, mini_caps)
-    capabilities = vim.tbl_deep_extend("force", capabilities, {
-      workspace = {
-        fileOperations = {
-          didRename = true,
-          willRename = true,
-        },
-      },
-    })
-
+    local capabilities = MiniCompletion.get_lsp_capabilities()
     require("flutter-tools").setup({
       flutter_lookup_cmd = "mise where flutter",
-      widget_guides = {
-        enabled = true,
-      },
       lsp = {
         capabilities = capabilities,
         settings = {
-          updateImportsOnRename = true,
-          renameFilesWithClasses = "always",
+          updateImportsOnRename = false,
+          renameFilesWithClasses = "prompt",
         },
       },
     })
