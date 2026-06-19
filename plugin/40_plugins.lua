@@ -2,18 +2,9 @@ local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 --- theme
 now(function()
-  vim.pack.add({ "https://github.com/loctvl842/monokai-pro.nvim" })
-  require("monokai-pro").setup({
-    override = function()
-      return {
-        Directory = { bg = "none" },
-        SnacksPickerPathIgnored = { link = "Comment" },
-        SnacksPickerPathHidden = { link = "Comment" },
-        SnacksPickerGitIgnored = { link = "Comment" },
-      }
-    end,
-  })
-  vim.cmd.colorscheme("monokai-pro")
+  vim.pack.add({ "https://github.com/navarasu/onedark.nvim" })
+  require("onedark").setup({})
+  require("onedark").load()
 end)
 
 -- treesitter
