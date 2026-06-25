@@ -17,7 +17,7 @@ later(function()
     "lua_ls",               -- lua
     "intelephense",         -- php
     "gopls",                -- go
-    "vtsls",                -- typescript/javascript
+    "tsgo",                 -- typescript/javascript
     "cucumberls",           -- gherkin
     "superhtml", "emmetls", -- html
     "cssls",                -- css
