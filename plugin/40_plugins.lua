@@ -61,28 +61,15 @@ now_if_args(function()
   }
   vim.treesitter.language.register("sql", "mysql")
 
-  -- install parsers
-  local isnt_installed = function(lang)
-    return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
-  end
-  local to_install = vim.tbl_filter(isnt_installed, languages)
-  if #to_install > 0 then require("nvim-treesitter").install(to_install) end
+  require("nvim-treesitter").install(languages)
 
-  -- enable highlighting
-  local filetypes = {}
-  for _, lang in ipairs(languages) do
-    for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
-      table.insert(filetypes, ft)
-    end
-  end
   vim.api.nvim_create_autocmd("FileType", {
-    pattern = filetypes,
     group = vim.api.nvim_create_augroup("enable-treesitter", { clear = true }),
     callback = function(ev)
-      vim.treesitter.start(ev.buf)
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-      vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      pcall(vim.treesitter.start, ev.buf)
       vim.wo[0][0].foldmethod = "expr"
+      vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end,
   })
 end)
