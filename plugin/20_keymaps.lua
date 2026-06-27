@@ -8,6 +8,9 @@ end
 local nmap_leader = function(suffix, rhs, desc)
   vim.keymap.set("n", "<Leader>" .. suffix, rhs, { desc = desc })
 end
+local vmap_leader = function(suffix, rhs, desc)
+  vim.keymap.set("v", "<Leader>" .. suffix, rhs, { desc = desc })
+end
 local xmap_leader = function(suffix, rhs, desc)
   vim.keymap.set("x", "<Leader>" .. suffix, rhs, { desc = desc })
 end
@@ -91,6 +94,23 @@ Config.leader_group_clues = {
   { mode = "n", keys = "<Leader>o", desc = "+Other" },
   { mode = "n", keys = "<Leader>t", desc = "+Test" },
 }
+
+if Config.ai_mode == "magenta" then
+  table.insert(
+    Config.leader_group_clues,
+    { mode = "n", keys = "<Leader>m", desc = "+Magenta AI" }
+  )
+end
+
+if Config.ai_mode == "codecompanion" then
+  table.insert(
+    Config.leader_group_clues,
+    { mode = "n", keys = "<Leader>a", desc = "+AI CodeCompanion" }
+  )
+  nmap_leader("ac", "<Cmd>CodeCompanionChat Toggle<CR>", "Chat")
+  vmap_leader("aa", "<Cmd>CodeCompanionChat Add<CR>", "Add Selection")
+  nmap_leader("ai", "<Cmd>CodeCompanion<CR>", "Inline Prompt")
+end
 
 -- special leader direct keymaps
 nmap_leader("/", "<Cmd>lua Snacks.picker.grep()<CR>", "Grep search")

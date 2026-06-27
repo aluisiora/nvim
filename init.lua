@@ -26,6 +26,7 @@ end
 
 -- Some functionality is only useful for certain projects and when certain binaries
 -- are available on the system
+Config.ai_mode = os.getenv("NVIM_AI_MODE") or "none"
 Config.has_executable = function(exec) return vim.fn.executable(exec) == 1 end
 Config.has_project_file = function(filename)
   local path = vim.fn.getcwd() .. "/" .. filename

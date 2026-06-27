@@ -4,6 +4,11 @@
       "rev": "1900f89dc17c603eec29960f57c00bd9ae696495",
       "src": "https://github.com/antoinemadec/FixCursorHold.nvim"
     },
+    "codecompanion.nvim": {
+      "rev": "eba3b42f86ed3831b1a473744e94a90d6dee4b6b",
+      "src": "https://www.github.com/olimorris/codecompanion.nvim",
+      "version": "19.0.0 - 20.0.0"
+    },
     "conform.nvim": {
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "https://github.com/stevearc/conform.nvim"
@@ -23,6 +28,14 @@
     "hurl.nvim": {
       "rev": "0e5430d5130fe95fc1b8b015491b50274aa2e796",
       "src": "https://github.com/jellydn/hurl.nvim"
+    },
+    "img-clip.nvim": {
+      "rev": "b6ddfb97b5600d99afe3452d707444afda658aca",
+      "src": "https://www.github.com/HakonHarnes/img-clip.nvim"
+    },
+    "magenta.nvim": {
+      "rev": "d7bc50a9027627538510c2b0a92e7611879c7129",
+      "src": "https://github.com/dlants/magenta.nvim"
     },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
