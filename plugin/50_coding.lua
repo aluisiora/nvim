@@ -270,6 +270,14 @@ later(function()
         options = {
           persist_project_selection = true,
           enable_dynamic_test_discovery = true,
+          get_playwright_config = function()
+            local remote_config = vim.fn.getcwd()
+              .. "/playwright.remote.config.ts"
+            if vim.fn.filereadable(remote_config) == 1 then
+              return remote_config
+            end
+            return vim.fn.getcwd() .. "/playwright.config.ts"
+          end,
         },
       })
     )
