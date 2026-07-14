@@ -109,6 +109,10 @@
       "rev": "df4792accde9db0043121f32628bcf8e645d9aea",
       "src": "https://github.com/navarasu/onedark.nvim"
     },
+    "opencode.nvim": {
+      "rev": "4e9321ba7e039db7cd51c2bbb49651566ff1f7b0",
+      "src": "https://github.com/sudo-tee/opencode.nvim"
+    },
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"

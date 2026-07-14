@@ -1,5 +1,15 @@
 local later, ai_mode = Config.later, Config.ai_mode
 
+-- opencode
+later(function()
+  vim.pack.add({ "https://github.com/sudo-tee/opencode.nvim" })
+  if ai_mode == "opencode" then
+    require("opencode").setup({
+      preferred_picker = "snacks",
+    })
+  end
+end)
+
 -- claude
 later(function()
   local magenta_build = function(data)
