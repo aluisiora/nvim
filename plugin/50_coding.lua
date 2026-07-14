@@ -15,7 +15,7 @@ later(function()
   -- stylua: ignore
   vim.lsp.enable({
     "lua_ls",               -- lua
-    "intelephense",         -- php
+    "phpantom_lsp",         -- php
     "gopls",                -- go
     "tsgo",                 -- typescript/javascript
     "cucumberls",           -- gherkin
