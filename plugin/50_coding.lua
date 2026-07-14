@@ -59,7 +59,7 @@ later(function()
     typescript = { "prettier" },
     html = { "superhtml" },
     css = { "prettier" },
-    go = { "gofumpt" },
+    go = { "goimports" },
     json = { "fixjson" },
     jsonc = { "fixjson" },
     dart = { "dart_format" },
