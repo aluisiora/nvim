@@ -38,27 +38,3 @@ later(function()
     })
   end
 end)
-
--- antigravity
-later(function()
-  vim.pack.add({ "https://www.github.com/HakonHarnes/img-clip.nvim" })
-  vim.pack.add({
-    {
-      src = "https://www.github.com/olimorris/codecompanion.nvim",
-      version = vim.version.range("^19.0.0"),
-    },
-  })
-
-  if ai_mode == "codecompanion" then
-    require("img-clip").setup({
-      filetypes = {
-        codecompanion = {
-          prompt_for_file_name = false,
-          template = "[Image]($FILE_PATH)",
-          use_absolute_path = true,
-        },
-      },
-    })
-    require("codecompanion").setup()
-  end
-end)
