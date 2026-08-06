@@ -50,7 +50,6 @@ now_if_args(function()
     "regex",
     "scss",
     "sql",
-    "tmux",
     "tsx",
     "typescript",
     "vim",
