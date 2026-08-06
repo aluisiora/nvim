@@ -5,7 +5,7 @@
       "src": "https://github.com/antoinemadec/FixCursorHold.nvim"
     },
     "codecompanion.nvim": {
-      "rev": "2e8865f81a0c8b5900fced953a81fe86c53416b1",
+      "rev": "2b959b2bf5fdb13e3b333c078ba549996e477b7c",
       "src": "https://www.github.com/olimorris/codecompanion.nvim",
       "version": "19.0.0 - 20.0.0"
     },
@@ -18,7 +18,7 @@
       "src": "https://github.com/j-hui/fidget.nvim"
     },
     "flutter-tools.nvim": {
-      "rev": "7d1acfd139215e02d2784733af69a61aaebe06e8",
+      "rev": "0867b346e9a60753080168188c8f1ee6be40b767",
       "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
     },
     "friendly-snippets": {
@@ -34,15 +34,19 @@
       "src": "https://www.github.com/HakonHarnes/img-clip.nvim"
     },
     "magenta.nvim": {
-      "rev": "a2497dd3275e01479523118bddf014bc2e7cf266",
+      "rev": "8d47471fbe1a16b28afc0f6f448774674964e1f1",
       "src": "https://github.com/dlants/magenta.nvim"
     },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
       "src": "https://github.com/mason-org/mason.nvim"
     },
+    "mermaid.nvim": {
+      "rev": "b6ab941f418809d40102f11ace9da3569c33e52e",
+      "src": "https://github.com/kevalin/mermaid.nvim"
+    },
     "mini.nvim": {
-      "rev": "928971c3cfe99ddf29659acc31214cfa836fabe4",
+      "rev": "3e47ec3709716177bf28e2d17e35c7ab39db126e",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "monokai-pro.nvim": {
@@ -50,7 +54,7 @@
       "src": "https://github.com/loctvl842/monokai-pro.nvim"
     },
     "neotest": {
-      "rev": "fb84d87285698f7055f618083c351984449119b8",
+      "rev": "1c529a1ef9c82e8131e872368415cecc2bb86ea2",
       "src": "https://github.com/nvim-neotest/neotest"
     },
     "neotest-dart": {
@@ -58,7 +62,7 @@
       "src": "https://github.com/sidlatau/neotest-dart"
     },
     "neotest-golang": {
-      "rev": "542cbaf37f1233a2723ccd64ce8ed7e3acbd192b",
+      "rev": "65b2be63c3de00e6f15c05388ebdc8d603dbd727",
       "src": "https://github.com/fredrikaverpil/neotest-golang"
     },
     "neotest-jest": {
@@ -86,7 +90,7 @@
       "src": "https://github.com/leoluz/nvim-dap-go"
     },
     "nvim-dap-ui": {
-      "rev": "1a66cabaa4a4da0be107d5eda6d57242f0fe7e49",
+      "rev": "cc9dd33aade7f20bae414d0cba163bc60d4d4b43",
       "src": "https://github.com/rcarriga/nvim-dap-ui"
     },
     "nvim-lint": {
@@ -94,15 +98,15 @@
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-nio": {
-      "rev": "21f5324bfac14e22ba26553caf69ec76ae8a7662",
+      "rev": "edcc181a875301dd21840189aa2f2f9ad69fc172",
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "rev": "3d3321b560a63ff92a8692401f303a5123336b86",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "851e865342e5a4cb1ae23d31caf6e991e1c99f1e",
+      "rev": "898ee307df58f854d11cd7edd06472574d48014e",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
     },
     "onedark.nvim": {
@@ -110,7 +114,7 @@
       "src": "https://github.com/navarasu/onedark.nvim"
     },
     "opencode.nvim": {
-      "rev": "4e9321ba7e039db7cd51c2bbb49651566ff1f7b0",
+      "rev": "cdf00c5f4ac8161d3ec66bfcb8af140b30b42c6a",
       "src": "https://github.com/sudo-tee/opencode.nvim"
     },
     "plenary.nvim": {
