@@ -3,6 +3,8 @@
 vim.g.mapleader      = " " -- Use `<Space>` as <Leader> key
 vim.g.maplocalleader = " "
 
+vim.o.background = "dark" -- Always dark mode
+
 vim.o.mousescroll = "ver:25,hor:6" -- Customize mouse scroll
 vim.o.switchbuf   = "usetab"       -- Use already opened buffers when switching
 vim.o.undofile    = true           -- Enable persistent undo

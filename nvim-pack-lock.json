@@ -5,7 +5,7 @@
       "src": "https://github.com/antoinemadec/FixCursorHold.nvim"
     },
     "conform.nvim": {
-      "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
+      "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "fidget.nvim": {
@@ -21,7 +21,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "hurl.nvim": {
-      "rev": "0e5430d5130fe95fc1b8b015491b50274aa2e796",
+      "rev": "920681a8886df253837eabe9ebc8ad186bcc93b2",
       "src": "https://github.com/jellydn/hurl.nvim"
     },
     "mason.nvim": {
@@ -29,11 +29,11 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "3e47ec3709716177bf28e2d17e35c7ab39db126e",
+      "rev": "1098976ddda3cf00f50c1dda5eef10ccf463d9eb",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "neotest": {
-      "rev": "1c529a1ef9c82e8131e872368415cecc2bb86ea2",
+      "rev": "27bf921498043f7ecd821d6db68d05de244bbd02",
       "src": "https://github.com/nvim-neotest/neotest"
     },
     "neotest-dart": {
@@ -73,7 +73,7 @@
       "src": "https://github.com/rcarriga/nvim-dap-ui"
     },
     "nvim-lint": {
-      "rev": "a219b2c9e5b4765e5c845aba119dad55806fcaf1",
+      "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-nio": {
@@ -81,7 +81,7 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "3d3321b560a63ff92a8692401f303a5123336b86",
+      "rev": "8b98b4470eb326f1c7b50dae79f8c963568e5720",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
@@ -97,7 +97,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "f422cb5c6855f150e2ddcfaf44e7157b98b34f6a",
+      "rev": "4663eb3ecd538bd5062628fb6d95bbe6bdca78f6",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "snacks.nvim": {

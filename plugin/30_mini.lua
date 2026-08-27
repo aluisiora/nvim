@@ -23,6 +23,9 @@ end)
 -- Statusline. Sets `:h 'statusline'` to show more info in a line below window.
 now(function() require("mini.statusline").setup() end)
 
+-- Statuscolumn. Sets `:h 'statuscolumn'` to show more info in a line below window.
+now(function() require("mini.statuscolumn").setup() end)
+
 -- Completion and signature help. Implements async "two stage" autocompletion:
 -- - Based on attached LSP servers that support completion.
 -- - Fallback (based on built-in keyword completion) if there is no LSP candidates.
