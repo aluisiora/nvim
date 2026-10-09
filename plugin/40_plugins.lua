@@ -1,10 +1,9 @@
 local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
---- theme
+-- theme
 now(function()
-  vim.pack.add({ "https://github.com/navarasu/onedark.nvim" })
-  require("onedark").setup({})
-  require("onedark").load()
+  vim.pack.add({ "https://github.com/folke/tokyonight.nvim" })
+  vim.cmd[[colorscheme tokyonight-night]]
 end)
 
 -- treesitter
